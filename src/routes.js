@@ -42,6 +42,8 @@ import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
 import Notifications from "layouts/notifications";
 import Profile from "layouts/profile";
+import ProfilePage_rentee from "layouts/profile/data/ProfilePage_rentee";
+import ProfilePage_renter from "layouts/profile/data/ProfilePage_renter";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 
@@ -112,6 +114,26 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/dashboard",
     component: <SignUp />,
+  },
+  {
+    type: "collapse",
+    name: "Profile Rentee",
+    key: "profile-rentee",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile-rentee",
+    component: <ProfilePage_rentee />,
+    title: "Rentee Profile",
+    titleTypographyProps: { align: "center" },
+  },
+  {
+    type: "collapse",
+    name: "Renter Profile",
+    key: "profile-renter",
+    icon: <Icon fontSize="small">person</Icon>,
+    route: "/profile-renter",
+    component: <ProfilePage_renter />,
+    title: "Renter Profile",
+    titleTypographyProps: { align: "center" },
   },
 ];
 
