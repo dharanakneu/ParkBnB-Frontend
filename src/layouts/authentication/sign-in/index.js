@@ -14,7 +14,8 @@ Coded by www.creative-tim.com
 */
 
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 // react-router-dom components
 import { Link } from "react-router-dom";
 
@@ -43,8 +44,47 @@ import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-
+  const [formData, setFormData] = useState({ email: "", password: "" });
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setErrorMessage(""); // Reset previous error message
+    try {
+      // First, try to login as a renter
+      const renterResponse = await axios.post(
+        "http://localhost:8080/api/renter/login",
+        formData
+      );
+      if (renterResponse.status === 200) {
+        // If renter login is successful, navigate to dashboard1
+        navigate("/dashboard1");
+        return; // Exit early, no need to check rentee login
+      }
+    } catch (error) {
+      // If renter login fails (401 or any other error), handle the rentee login
+      try {
+        const renteeResponse = await axios.post(
+          "http://localhost:8080/api/rentees/login",
+          formData
+        );
+        if (renteeResponse.status === 200) {
+          // If rentee login is successful, navigate to sign-up page
+          navigate("/sign-up");
+          return; // Exit early, no need to show an error
+        }
+      } catch (error) {
+        // If both renter and rentee logins fail, show an error message
+        setErrorMessage("Invalid email or password. Please try again.");
+      }
+    }
+  };
 
   return (
     <BasicLayout image={bgImage}>
@@ -63,31 +103,65 @@ function Basic() {
           <MDTypography variant="h4" fontWeight="medium" color="white" mt={1}>
             Sign in
           </MDTypography>
-          <Grid container spacing={3} justifyContent="center" sx={{ mt: 1, mb: 2 }}>
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            sx={{ mt: 1, mb: 2 }}
+          >
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography
+                component={MuiLink}
+                href="#"
+                variant="body1"
+                color="white"
+              >
                 <FacebookIcon color="inherit" />
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography
+                component={MuiLink}
+                href="#"
+                variant="body1"
+                color="white"
+              >
                 <GitHubIcon color="inherit" />
               </MDTypography>
             </Grid>
             <Grid item xs={2}>
-              <MDTypography component={MuiLink} href="#" variant="body1" color="white">
+              <MDTypography
+                component={MuiLink}
+                href="#"
+                variant="body1"
+                color="white"
+              >
                 <GoogleIcon color="inherit" />
               </MDTypography>
             </Grid>
           </Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
-          <MDBox component="form" role="form">
+          <MDBox component="form" role="form" onSubmit={handleSubmit}>
             <MDBox mb={2}>
-              <MDInput type="email" label="Email" fullWidth />
+              <MDInput
+                type="email"
+                label="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                fullWidth
+              />
             </MDBox>
             <MDBox mb={2}>
-              <MDInput type="password" label="Password" fullWidth />
+              <MDInput
+                type="password"
+                label="Password"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                fullWidth
+              />
             </MDBox>
             <MDBox display="flex" alignItems="center" ml={-1}>
               <Switch checked={rememberMe} onChange={handleSetRememberMe} />
@@ -102,7 +176,7 @@ function Basic() {
               </MDTypography>
             </MDBox>
             <MDBox mt={4} mb={1}>
-              <MDButton variant="gradient" color="info" fullWidth>
+              <MDButton type="submit" variant="gradient" color="info" fullWidth>
                 sign in
               </MDButton>
             </MDBox>
@@ -111,7 +185,7 @@ function Basic() {
                 Don&apos;t have an account?{" "}
                 <MDTypography
                   component={Link}
-                  to="/authentication/sign-up"
+                  to="/sign-up"
                   variant="button"
                   color="info"
                   fontWeight="medium"
