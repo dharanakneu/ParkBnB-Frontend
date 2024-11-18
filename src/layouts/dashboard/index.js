@@ -156,6 +156,7 @@ function Dashboard() {
         </MDBox>
       </MDBox>
       <Footer /> */}
+      <h1>I am Renter</h1>
     </DashboardLayout>
   );
 }
