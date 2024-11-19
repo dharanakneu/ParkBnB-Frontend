@@ -46,6 +46,7 @@ import ProfilePage_rentee from "layouts/profile/data/ProfilePage_rentee";
 import ProfilePage_renter from "layouts/profile/data/ProfilePage_renter";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
+import ParkingLocation from "layouts/parking-location";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -114,6 +115,10 @@ const routes = [
     icon: <Icon fontSize="small">assignment</Icon>,
     route: "/sign-up",
     component: <SignUp />,
+  },
+  {
+    route: "/parking-location/:id",
+    component: <ParkingLocation />,
   },
   {
     type: "collapse",
