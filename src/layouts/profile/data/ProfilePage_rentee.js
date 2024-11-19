@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Card, CardContent, Avatar, CardHeader, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Avatar,
+  CardHeader,
+  Typography,
+} from "@mui/material";
 
 const ProfilePage_rentee = () => {
   const [profileData, setProfileData] = useState(null);
@@ -32,7 +39,10 @@ const ProfilePage_rentee = () => {
           boxShadow: 3,
         }}
       >
-        <CardHeader title="Rentee Profile" titleTypographyProps={{ align: "center" }} />
+        <CardHeader
+          title="Rentee Profile"
+          titleTypographyProps={{ align: "center" }}
+        />
 
         <CardContent>
           {profileData ? (

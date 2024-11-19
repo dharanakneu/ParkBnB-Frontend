@@ -31,7 +31,9 @@ const ParkingLocation = () => {
         setLocationDetails(data);
 
         // Fetch linked spots based on the location ID
-        const spotsResponse = await fetch(`/api/parkinglocation/${id}/available-spots`);
+        const spotsResponse = await fetch(
+          `/api/parkinglocation/${id}/available-spots`
+        );
         if (!spotsResponse.ok) {
           throw new Error(`HTTP error! status: ${spotsResponse.status}`);
         }
@@ -72,9 +74,16 @@ const ParkingLocation = () => {
       style={{ padding: "20px", marginLeft: "80px" }}
     >
       <Grid item xs={12} sm={12} md={10} lg={10}>
-        <Card variant="outlined" style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
+        <Card
+          variant="outlined"
+          style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}
+        >
           <CardContent>
-            <Typography variant="h4" gutterBottom style={{ marginBottom: "30px" }}>
+            <Typography
+              variant="h4"
+              gutterBottom
+              style={{ marginBottom: "30px" }}
+            >
               Parking Location Details
             </Typography>
             {locationDetails.parkingLocationImage && ( // Check if the image URL exists
@@ -108,7 +117,10 @@ const ParkingLocation = () => {
               Select Parking Spot:
             </Typography>
             {linkedSpots.length > 0 ? (
-              <RadioGroup value={selectedSpot} onChange={(e) => setSelectedSpot(e.target.value)}>
+              <RadioGroup
+                value={selectedSpot}
+                onChange={(e) => setSelectedSpot(e.target.value)}
+              >
                 {linkedSpots.map((spot) => (
                   <FormControlLabel
                     key={spot.id}
@@ -116,8 +128,12 @@ const ParkingLocation = () => {
                     control={<Radio />}
                     label={
                       <div style={{ display: "flex", alignItems: "center" }}>
-                        <strong style={{ marginRight: "10px" }}>{spot.spotNumber}</strong>
-                        <div style={{ marginRight: "10px" }}>Type: {spot.spotType}</div>
+                        <strong style={{ marginRight: "10px" }}>
+                          {spot.spotNumber}
+                        </strong>
+                        <div style={{ marginRight: "10px" }}>
+                          Type: {spot.spotType}
+                        </div>
                         <div>Price/hr: ${spot.pricePerHour}</div>
                       </div>
                     }
