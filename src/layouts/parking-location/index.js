@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import {
   CircularProgress,
@@ -10,6 +11,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Rating,
 } from "@mui/material";
 
 const ParkingLocation = () => {
@@ -18,35 +20,46 @@ const ParkingLocation = () => {
   const [loading, setLoading] = useState(true);
   const [linkedSpots, setLinkedSpots] = useState([]);
   const [selectedSpot, setSelectedSpot] = useState("");
+  const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    // Fetch parking location details from API
-    const fetchLocationDetails = async () => {
-      try {
-        const response = await fetch(`/api/parkinglocation/${id}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setLocationDetails(data);
-
-        // Fetch linked spots based on the location ID
-        const spotsResponse = await fetch(
-          `/api/parkinglocation/${id}/available-spots`
-        );
-        if (!spotsResponse.ok) {
-          throw new Error(`HTTP error! status: ${spotsResponse.status}`);
-        }
-        const spotsData = await spotsResponse.json();
-        setLinkedSpots(spotsData); // Set linked spots data
-      } catch (error) {
-        console.error("Error fetching parking location details:", error);
-      } finally {
+    setLoading(true);
+    axios
+      .get(`http://localhost:8080/api/parkinglocation/${id}`)
+      .then((response) => {
+        console.log("Parking location data:", response.data);
+        setLocationDetails(response.data);
+      })
+      .catch((error) =>
+        console.error("Error fetching parking location data:", error)
+      )
+      .finally(() => {
         setLoading(false);
-      }
-    };
+      });
 
-    fetchLocationDetails();
+    axios
+      .get(`http://localhost:8080/api/parkinglocation/${id}/available-spots`)
+      .then((response) => {
+        console.log("Available spots data:", response.data);
+        setLinkedSpots(response.data);
+      })
+      .catch((error) =>
+        console.error(
+          "Error fetching linked available parking spots data:",
+          error
+        )
+      );
+
+    axios
+      .get(`http://localhost:8080/api/parkinglocation/${id}/reviews`)
+      .then((response) => {
+        console.log("Reviews data:", response.data);
+        setReviews(response.data);
+      })
+      .catch((error) => console.error("Error fetching reviews data:", error))
+      .finally(() => {
+        setLoading(false);
+      });
   }, [id]);
 
   if (loading) {
@@ -86,31 +99,39 @@ const ParkingLocation = () => {
             >
               Parking Location Details
             </Typography>
-            {locationDetails.parkingLocationImage && ( // Check if the image URL exists
-              <img
-                src={imageUrl} // Use the constructed image URL
-                alt="Parking Location"
-                style={{ width: "100%", height: "auto", marginBottom: "20px" }} // Responsive image
-              />
-            )}
-            <Typography variant="h6" style={{ marginBottom: "10px" }}>
-              Address:
-            </Typography>
-            <Typography variant="body1">
-              <strong>Street:</strong> {locationDetails.street}
-            </Typography>
-            <Typography variant="body1">
-              <strong>City:</strong> {locationDetails.city}
-            </Typography>
-            <Typography variant="body1">
-              <strong>State:</strong> {locationDetails.state}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Country:</strong> {locationDetails.country}
-            </Typography>
-            <Typography variant="body1">
-              <strong>Postal Code:</strong> {locationDetails.postalcode}
-            </Typography>
+            <Grid container spacing={6} style={{ marginBottom: "20px" }}>
+              <Grid item xs={12} md={6}>
+                {locationDetails.parkingLocationImage ? ( // Check if the image URL exists
+                  <img
+                    src={imageUrl} // Use the constructed image URL
+                    alt="Parking Location"
+                    style={{ width: "100%", height: "auto" }} // Responsive image
+                  />
+                ) : (
+                  <Typography variant="body1">No image available.</Typography> // Fallback message
+                )}
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Typography variant="h6" style={{ marginBottom: "10px" }}>
+                  Address:
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Street:</strong> {locationDetails.street}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>City:</strong> {locationDetails.city}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>State:</strong> {locationDetails.state}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Country:</strong> {locationDetails.country}
+                </Typography>
+                <Typography variant="body1">
+                  <strong>Postal Code:</strong> {locationDetails.postalcode}
+                </Typography>
+              </Grid>
+            </Grid>
 
             {/* Radio buttons for linked spots */}
             <Typography variant="h6" style={{ marginTop: "40px" }}>
@@ -142,6 +163,53 @@ const ParkingLocation = () => {
               </RadioGroup>
             ) : (
               <Typography>No available spots.</Typography>
+            )}
+
+            {/* Reviews Section */}
+            <Typography
+              variant="h6"
+              style={{ marginTop: "40px", marginBottom: "10px" }}
+            >
+              Reviews:
+            </Typography>
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <Card
+                  variant="outlined"
+                  key={review.id}
+                  elevation={0}
+                  sx={{
+                    border: "1px solid #e0e0e0",
+                    marginBottom: "10px",
+                    boxShadow: "none",
+                  }}
+                >
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      sx={{
+                        color: "text.secondary",
+                        fontSize: 14,
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      {review.renteeName}
+                      <Rating
+                        name="read-only"
+                        value={review.rating}
+                        readOnly
+                        style={{ marginLeft: "10px" }}
+                      />
+                    </Typography>
+                    <Typography sx={{ color: "text.primary", fontSize: 15 }}>
+                      {review.comment}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ))
+            ) : (
+              <Typography>No reviews available.</Typography>
             )}
 
             {/* Button container aligned to the right */}
