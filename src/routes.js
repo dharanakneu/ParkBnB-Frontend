@@ -47,6 +47,7 @@ import ProfilePage_renter from "layouts/profile/data/ProfilePage_renter";
 import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import ParkingLocation from "layouts/parking-location";
+import PostParkingLocation from "layouts/parking-location/post_parking_location";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -59,6 +60,14 @@ const routes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <Dashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Post Parking Location",
+    key: "post-parking-location",
+    icon: <Icon fontSize="small">add_location</Icon>,
+    route: "/post-parking-location",
+    component: <PostParkingLocation />,
   },
   {
     type: "collapse",
