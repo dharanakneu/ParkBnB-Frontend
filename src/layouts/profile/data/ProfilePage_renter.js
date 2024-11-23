@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Box, Card, CardContent, Avatar, CardHeader, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Avatar,
+  CardHeader,
+  Typography,
+} from "@mui/material";
 
 const ProfilePage_renter = () => {
   const [profileData, setProfileData] = useState(null);
@@ -33,7 +40,10 @@ const ProfilePage_renter = () => {
           boxShadow: 3,
         }}
       >
-        <CardHeader title="Renter Profile" titleTypographyProps={{ align: "center" }} />
+        <CardHeader
+          title="Renter Profile"
+          titleTypographyProps={{ align: "center" }}
+        />
         <CardContent>
           {profileData ? (
             <Box sx={{ textAlign: "center" }}>
@@ -80,7 +90,8 @@ const ProfilePage_renter = () => {
                   marginTop: 1,
                 }}
               >
-                Password: {profileData.password} {/* Display for debugging only */}
+                Password: {profileData.password}{" "}
+                {/* Display for debugging only */}
               </Typography>
             </Box>
           ) : (
