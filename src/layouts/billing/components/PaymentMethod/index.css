@@ -57,3 +57,7 @@ button[type="submit"]:hover {
   padding: 10px;
   margin-bottom: 8px;
 }
+
+.no-saved-cards-text {
+    margin-left: 23px  !important;
+}
