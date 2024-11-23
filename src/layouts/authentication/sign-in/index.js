@@ -56,32 +56,86 @@ function Basic() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMessage(""); // Reset previous error message
+
     try {
       // First, try to login as a renter
       const renterResponse = await axios.post(
         "http://localhost:8080/api/renter/login",
-        formData
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json", // Ensure proper content type
+          },
+        }
       );
+
       if (renterResponse.status === 200) {
-        // If renter login is successful, navigate to dashboard1
-        navigate("/dashboard1");
+        // If renter login is successful, navigate to dashboard
+        const { email, token } = renterResponse.data;
+
+        // Validate renter token
+        const validateResponse = await axios.get(
+          "http://localhost:8080/api/renter/validate",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        // Store renter info and token in sessionStorage
+        sessionStorage.setItem("userType", "renter");
+        sessionStorage.setItem("userEmail", email);
+        sessionStorage.setItem("token", token);
+        navigate("/dashboard");
+        setMessage(
+          `Login successful! Token is valid for user: ${validateResponse.data}`
+        );
+
         return; // Exit early, no need to check rentee login
       }
     } catch (error) {
       // If renter login fails (401 or any other error), handle the rentee login
+      console.log("Renter login failed, attempting rentee login...");
       try {
         const renteeResponse = await axios.post(
           "http://localhost:8080/api/rentees/login",
-          formData
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json", // Ensure proper content type
+            },
+          }
         );
+
         if (renteeResponse.status === 200) {
-          // If rentee login is successful, navigate to sign-up page
-          navigate("/sign-up");
+          // If rentee login is successful, navigate to dashboard
+          const { email, token } = renteeResponse.data;
+
+          // Store rentee info and token in sessionStorage
+          sessionStorage.setItem("userType", "rentee");
+          sessionStorage.setItem("userEmail", email);
+          sessionStorage.setItem("token", token);
+
+          // Validate rentee token
+          const validateResponse = await axios.get(
+            "http://localhost:8080/api/rentees/validate",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          navigate("/dashboard");
+          setMessage(
+            `Login successful! Token is valid for user: ${validateResponse.data}`
+          );
           return; // Exit early, no need to show an error
         }
       } catch (error) {
         // If both renter and rentee logins fail, show an error message
         setErrorMessage("Invalid email or password. Please try again.");
+        console.error(error); // Log error for debugging
       }
     }
   };
