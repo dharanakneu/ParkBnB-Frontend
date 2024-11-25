@@ -133,7 +133,11 @@ export default function App() {
                   : brandWhite
               }
               brandName="Park BnB"
-              routes={userRole === "renter" ? renterRoutes : renteeRoutes}
+              routes={
+                sessionStorage.getItem("userType") === "renter"
+                  ? renterRoutes
+                  : renteeRoutes
+              }
               onMouseEnter={handleOnMouseEnter}
               onMouseLeave={handleOnMouseLeave}
             />
@@ -147,7 +151,7 @@ export default function App() {
             path="/dashboard"
             element={
               <PrivateRoute>
-                {userRole === "renter" ? (
+                {sessionStorage.getItem("userType") === "renter" ? (
                   <RenterDashboard />
                 ) : (
                   <RenteeDashboard />
