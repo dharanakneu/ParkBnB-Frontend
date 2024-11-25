@@ -71,7 +71,7 @@ function Basic() {
 
       if (renterResponse.status === 200) {
         // If renter login is successful, navigate to dashboard
-        const { email, token } = renterResponse.data;
+        const { id, email, token } = renterResponse.data;
 
         // Validate renter token
         const validateResponse = await axios.get(
@@ -85,6 +85,7 @@ function Basic() {
 
         // Store renter info and token in sessionStorage
         sessionStorage.setItem("userType", "renter");
+        sessionStorage.setItem("userId", id);
         sessionStorage.setItem("userEmail", email);
         sessionStorage.setItem("token", token);
         navigate("/dashboard");
@@ -110,10 +111,11 @@ function Basic() {
 
         if (renteeResponse.status === 200) {
           // If rentee login is successful, navigate to dashboard
-          const { email, token } = renteeResponse.data;
+          const { id, email, token } = renteeResponse.data;
 
           // Store rentee info and token in sessionStorage
           sessionStorage.setItem("userType", "rentee");
+          sessionStorage.setItem("userId", id);
           sessionStorage.setItem("userEmail", email);
           sessionStorage.setItem("token", token);
 
