@@ -48,7 +48,9 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import ParkingLocation from "layouts/parking-location";
 import PostParkingLocation from "layouts/parking-location/post_parking_location";
-import Reservations from "layouts/reservations"; // Adjust the path as necessary
+import Reservations from "layouts/reservations";
+import PaymentMethod from "layouts/billing/components/PaymentMethod";
+
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -157,6 +159,10 @@ const routes = [
     component: <ProfilePage_renter />,
     title: "Renter Profile",
     titleTypographyProps: { align: "center" },
+  },
+  {
+    route: "/paymentMethod",
+    component: <PaymentMethod />,
   },
 ];
 

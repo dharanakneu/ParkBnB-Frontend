@@ -1,0 +1,63 @@
+.cardGrid {
+    margin-left: 18rem;
+    margin-top: 1.2rem;
+     margin-right: 2rem;
+}
+
+.pay-text {
+  font-size: 20px; /* Larger text for better visibility */
+  margin-right: 8px; /* Space between text and amount */
+  margin-left: 4px; /* Align it properly from left */
+  font-stretch: 100%; /* Adjusts width to a standard ratio */
+  letter-spacing: 0.8px; /* Adds spacing between characters */
+  font-weight: 500; /* Medium weight for emphasis */
+}
+
+.pay-amount {
+  font-size: 22px; /* Slightly larger for emphasis */
+  font-weight: bold; /* Bold for importance */
+  color: #2E7D32; /* Dark green for positive tone */
+  letter-spacing: 0.5px; /* Subtle spacing for clarity */
+}
+
+/* Style for the Add Card button */
+button[type="submit"] {
+  background-color: #64ac66; /* Green color for Add Card button */
+  color: rgb(238, 234, 234); /* White text color */
+  padding: 10px 20px; /* Add padding for better spacing */
+  border-radius: 4px; /* Slightly rounded corners */
+  font-size: 16px; /* Increase font size for better readability */
+  margin-top: 20px; /* Space above the button */
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049; /* Darker green when hovering */
+  transition: background-color 0.3s ease; /* Smooth transition effect */
+}
+
+/* Style for the Cancel button */
+.MuiDialogActions-root button {
+  color: #f35247; 
+  font-size: 14px; /* Increase font size for readability */
+  font-weight: bold; /* Make the text bold for emphasis */
+}
+
+.MuiDialogActions-root button:hover {
+ /* background-color: #ffcdd2; */
+ color: #f21404; 
+  transition: background-color 0.3s ease;
+}
+
+/* General card element styling */
+ .card-element {
+  font-size: 16px;
+  color: #424770;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 8px;
+}
+
+.no-saved-cards-text {
+    margin-left: 23px  !important;
+}
