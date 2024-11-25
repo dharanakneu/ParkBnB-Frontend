@@ -82,7 +82,6 @@ function DashboardNavbar({ absolute, light, isMini }) {
       position={absolute ? "absolute" : navbarType}
       color="inherit"
       sx={(theme) =>
-
         navbar(theme, { transparentNavbar: false, absolute, light, darkMode })
       }
     >

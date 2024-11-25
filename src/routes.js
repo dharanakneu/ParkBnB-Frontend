@@ -50,6 +50,7 @@ import ParkingLocation from "layouts/parking-location";
 import PostParkingLocation from "layouts/parking-location/post_parking_location";
 import Reservations from "layouts/reservations";
 import PaymentMethod from "layouts/billing/components/PaymentMethod";
+import SearchParkingLocation from "layouts/search-parking";
 
 
 // @mui icons
@@ -71,6 +72,15 @@ const routes = [
     icon: <Icon fontSize="small">add_location</Icon>,
     route: "/post-parking-location",
     component: <PostParkingLocation />,
+  },
+
+  {
+    type: "collapse",
+    name: "Search Parking Location",
+    key: "search-parking-location",
+    icon: <Icon fontSize="small">add_location</Icon>,
+    route: "/search-parking-location",
+    component: <SearchParkingLocation />,
   },
   {
     type: "collapse",
