@@ -68,11 +68,6 @@ const PostParkingLocation = () => {
     formData.append("postalcode", locationDetails.postalcode);
     formData.append("renterId", locationDetails.renterId);
 
-    console.log(
-      "Sending request to:",
-      "http://localhost:8080/api/parkinglocation"
-    );
-
     axios
       .post("http://localhost:8080/api/parkinglocation", formData)
       .then((response) => {
