@@ -52,7 +52,6 @@ import Reservations from "layouts/reservations";
 import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import SearchParkingLocation from "layouts/search-parking";
 
-
 // @mui icons
 import Icon from "@mui/material/Icon";
 
