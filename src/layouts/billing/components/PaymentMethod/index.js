@@ -36,6 +36,8 @@ const PaymentMethod = () => {
   const [renteeId] = useState(1); // Example rentee ID
   const stripe = useStripe();
   const elements = useElements();
+  const [errorDialogOpen, setErrorDialogOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     fetchCards();
@@ -120,16 +122,37 @@ const PaymentMethod = () => {
       console.log("Payment successful:", response.data);
     } catch (error) {
       console.log(error.response);
-      console.error("Error processing payment", error);
-      const errorMessage =
-        error.response?.data?.error?.message ||
-        `An unexpected error occurred. ${error.response.data}`;
-      alert(`Payment Failed: ${errorMessage}`);
-      // alert("Payment Failed", error.response.data);
+
+      // Extract the Stripe error message from the full error string
+      const fullError = error.response.data.toString(); // Ensure it's a string
+      console.log(fullError);
+      const messageMatch = fullError.match(/Stripe error: (.*?);/); // Extract message between "Stripe error: " and ";"
+
+      // Get the extracted message or use a fallback message
+      const stripeErrorMessage = messageMatch
+        ? messageMatch[1].trim()
+        : "An unexpected error occurred.";
+      console.log(messageMatch);
+
+      // Set the formatted error message
+      setErrorMessage(`Payment Failed: ${stripeErrorMessage}`);
+      setErrorDialogOpen(true); // Open the error dialog
     }
   };
   return (
     <Card id="payment-method" className="cardGrid">
+      {/* Error Dialog */}
+      <Dialog open={errorDialogOpen} onClose={() => setErrorDialogOpen(false)}>
+        <DialogTitle>Error Processing Payment</DialogTitle>
+        <DialogContent>
+          <Typography>{errorMessage}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setErrorDialogOpen(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
       <MDBox
         pt={2}
         px={2}
@@ -233,7 +256,7 @@ const PaymentMethod = () => {
       <MDBox p={2}>
         <Grid container spacing={3}>
           {savedCards.length === 0 ? (
-            <Typography>
+            <Typography className="no-saved-cards-text">
               No saved cards found. Please add a card first.
             </Typography>
           ) : (
