@@ -25,35 +25,23 @@ import {
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 
-import Receipt from "./Receipt";
-
 // Images
 import masterCardLogo from "assets/images/logos/mastercard.png";
 import visaLogo from "assets/images/logos/visa.png";
 const PaymentMethod = () => {
   const [savedCards, setSavedCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
-<<<<<<< HEAD
   const [isAddingCard, setIsAddingCard] = useState(false); // Track whether adding a new card
   const [paymentAmount, setPaymentAmount] = useState(10);
   const [cardType, setCardType] = useState(""); // For storing the selected card type
   const [cardHolderName, setCardholderName] = useState(""); // For storing the cardholder name
-=======
-  const [isAddingCard, setIsAddingCard] = useState(false);
-  const [paymentAmount, setPaymentAmount] = useState(10); // Static payment amount for simplicity
-  const [cardType, setCardType] = useState("");
-  const [cardHolderName, setCardholderName] = useState("");
->>>>>>> b8d58dc (Separate Receipt)
   const [renteeId] = useState(1); // Example rentee ID
   const stripe = useStripe();
   const elements = useElements();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [openReceiptDialog, setOpenReceiptDialog] = useState(false);
-<<<<<<< HEAD
   const [paymentData, setPaymentData] = useState(null); // Store receipt data
-=======
->>>>>>> b8d58dc (Separate Receipt)
 
   useEffect(() => {
     fetchCards();
@@ -139,13 +127,9 @@ const PaymentMethod = () => {
         amount: parseFloat(10),
         last4: selectedCard.last4,
       });
-<<<<<<< HEAD
       // alert("Payment Successful!");
       setOpenReceiptDialog(true);
       console.log("Payment successful:", response.data);
-=======
-      setOpenReceiptDialog(true);
->>>>>>> b8d58dc (Separate Receipt)
     } catch (error) {
       console.log(error.response);
 
@@ -351,10 +335,6 @@ const PaymentMethod = () => {
           </form>
         </MDBox>
       )}
-<<<<<<< HEAD
-=======
-      {/* Payment Receipt Dialog */}
->>>>>>> b8d58dc (Separate Receipt)
       <Receipt
         open={openReceiptDialog}
         paymentData={paymentData}
