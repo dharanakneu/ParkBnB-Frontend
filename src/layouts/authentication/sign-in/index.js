@@ -72,7 +72,10 @@ function Basic() {
       );
 
       if (renterResponse.status === 200) {
-        const { email, token } = renterResponse.data;
+
+        // If renter login is successful, navigate to dashboard
+        const { id, email, token } = renterResponse.data;
+
         // Validate renter token
         const validateResponse = await axios.get(
           "http://localhost:8080/api/renter/validate",
@@ -84,6 +87,7 @@ function Basic() {
         );
         // Store renter info and token in sessionStorage
         sessionStorage.setItem("userType", "renter");
+        sessionStorage.setItem("userId", id);
         sessionStorage.setItem("userEmail", email);
         sessionStorage.setItem("token", token);
 
@@ -114,7 +118,9 @@ function Basic() {
         );
 
         if (renteeResponse.status === 200) {
-          const { email, token } = renteeResponse.data;
+
+          // If rentee login is successful, navigate to dashboard
+          const { id, email, token } = renteeResponse.data;
 
           // Validate rentee token
           const validateResponse = await axios.get(
@@ -125,11 +131,13 @@ function Basic() {
               },
             }
           );
-
+          
           // Store rentee info and token in sessionStorage
           sessionStorage.setItem("userType", "rentee");
+          sessionStorage.setItem("userId", id);
           sessionStorage.setItem("userEmail", email);
           sessionStorage.setItem("token", token);
+
 
           // Call login with role
           login("rentee"); // Set the user as authenticated with role

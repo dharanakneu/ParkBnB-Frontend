@@ -8,6 +8,8 @@ import Icon from "@mui/material/Icon";
 import Tooltip from "@mui/material/Tooltip";
 import MDButton from "components/MDButton";
 import "./index.css";
+import Receipt from "./Receipt";
+
 import {
   Button,
   Box,
@@ -30,7 +32,7 @@ const PaymentMethod = () => {
   const [savedCards, setSavedCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [isAddingCard, setIsAddingCard] = useState(false); // Track whether adding a new card
-  const [paymentAmount, setPaymentAmount] = useState("");
+  const [paymentAmount, setPaymentAmount] = useState(10);
   const [cardType, setCardType] = useState(""); // For storing the selected card type
   const [cardHolderName, setCardholderName] = useState(""); // For storing the cardholder name
   const [renteeId] = useState(1); // Example rentee ID
@@ -38,6 +40,8 @@ const PaymentMethod = () => {
   const elements = useElements();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [openReceiptDialog, setOpenReceiptDialog] = useState(false);
+  const [paymentData, setPaymentData] = useState(null); // Store receipt data
 
   useEffect(() => {
     fetchCards();
@@ -118,7 +122,13 @@ const PaymentMethod = () => {
           cardholderName: selectedCard.cardHolderName,
         }
       );
-      alert("Payment Successful!");
+      setPaymentData({
+        cardHolderName: selectedCard.cardHolderName,
+        amount: parseFloat(10),
+        last4: selectedCard.last4,
+      });
+      // alert("Payment Successful!");
+      setOpenReceiptDialog(true);
       console.log("Payment successful:", response.data);
     } catch (error) {
       console.log(error.response);
@@ -325,7 +335,13 @@ const PaymentMethod = () => {
           </form>
         </MDBox>
       )}
+      <Receipt
+        open={openReceiptDialog}
+        paymentData={paymentData}
+        onClose={() => setOpenReceiptDialog(false)}
+      />
     </Card>
   );
 };
+
 export default PaymentMethod;
