@@ -36,7 +36,6 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React layouts
-import Dashboard from "layouts/dashboard";
 import Tables from "layouts/tables";
 import Billing from "layouts/billing";
 import RTL from "layouts/rtl";
@@ -50,19 +49,20 @@ import ParkingLocation from "layouts/parking-location";
 import PostParkingLocation from "layouts/parking-location/post_parking_location";
 import Reservations from "layouts/reservations";
 import PaymentMethod from "layouts/billing/components/PaymentMethod";
-
+import RenteeDashboard from "layouts/dashboard/rentee-dashboard";
+import RenterDashboard from "layouts/dashboard/renter-dashboard";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
 
-const routes = [
+const renterRoutes = [
   {
     type: "collapse",
     name: "Dashboard",
     key: "dashboard",
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Dashboard />,
+    component: <RenterDashboard />,
   },
   {
     type: "collapse",
@@ -80,65 +80,17 @@ const routes = [
     route: "/my-reservations",
     component: <Reservations />,
   },
+  // Add other renter-specific routes here
+];
+
+const renteeRoutes = [
   {
     type: "collapse",
-    name: "History",
-    key: "tables",
-    icon: <Icon fontSize="small">History</Icon>,
+    name: "Dashboard",
+    key: "dashboard",
+    icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
-    component: <Tables />,
-  },
-  {
-    type: "collapse",
-    name: "Billing",
-    key: "billing",
-    icon: <Icon fontSize="small">Billing</Icon>,
-    route: "/dashboard",
-    component: <Billing />,
-  },
-  {
-    type: "collapse",
-    name: "Book here",
-    key: "rtl",
-    icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
-    route: "/dashboard",
-    component: <RTL />,
-  },
-  // {
-  //   type: "collapse",
-  //   name: "Notifications",
-  //   key: "notifications",
-  //   icon: <Icon fontSize="small">notifications</Icon>,
-  //   route: "/notifications",
-  //   component: <Notifications />,
-  // },
-  {
-    type: "collapse",
-    name: "Profile",
-    key: "profile",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/dashboard",
-    component: <Profile />,
-  },
-  {
-    type: "collapse",
-    name: "Sign In",
-    key: "sign-in",
-    icon: <Icon fontSize="small">login</Icon>,
-    route: "/sign-in",
-    component: <SignIn />,
-  },
-  {
-    type: "collapse",
-    name: "Sign Up",
-    key: "sign-up",
-    icon: <Icon fontSize="small">assignment</Icon>,
-    route: "/sign-up",
-    component: <SignUp />,
-  },
-  {
-    route: "/parking-location/:id",
-    component: <ParkingLocation />,
+    component: <RenteeDashboard />,
   },
   {
     type: "collapse",
@@ -151,19 +103,127 @@ const routes = [
     titleTypographyProps: { align: "center" },
   },
   {
-    type: "collapse",
-    name: "Renter Profile",
-    key: "profile-renter",
-    icon: <Icon fontSize="small">person</Icon>,
-    route: "/profile-renter",
-    component: <ProfilePage_renter />,
-    title: "Renter Profile",
-    titleTypographyProps: { align: "center" },
+    route: "/parking-location/:id",
+    component: <ParkingLocation />,
   },
   {
     route: "/paymentMethod",
     component: <PaymentMethod />,
   },
+  // Add other rentee-specific routes here
 ];
 
-export default routes;
+// Export both sets of routes
+export { renterRoutes, renteeRoutes };
+
+// const routes = [
+//   {
+//     type: "collapse",
+//     name: "Dashboard",
+//     key: "dashboard",
+//     icon: <Icon fontSize="small">dashboard</Icon>,
+//     route: "/dashboard",
+//     component: <Dashboard />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "Post Parking Location",
+//     key: "post-parking-location",
+//     icon: <Icon fontSize="small">add_location</Icon>,
+//     route: "/post-parking-location",
+//     component: <PostParkingLocation />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "My Reservations",
+//     key: "my-reservations",
+//     icon: <Icon fontSize="small">book</Icon>,
+//     route: "/my-reservations",
+//     component: <Reservations />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "History",
+//     key: "tables",
+//     icon: <Icon fontSize="small">History</Icon>,
+//     route: "/dashboard",
+//     component: <Tables />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "Billing",
+//     key: "billing",
+//     icon: <Icon fontSize="small">Billing</Icon>,
+//     route: "/dashboard",
+//     component: <Billing />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "Book here",
+//     key: "rtl",
+//     icon: <Icon fontSize="small">format_textdirection_r_to_l</Icon>,
+//     route: "/dashboard",
+//     component: <RTL />,
+//   },
+//   // {
+//   //   type: "collapse",
+//   //   name: "Notifications",
+//   //   key: "notifications",
+//   //   icon: <Icon fontSize="small">notifications</Icon>,
+//   //   route: "/notifications",
+//   //   component: <Notifications />,
+//   // },
+//   {
+//     type: "collapse",
+//     name: "Profile",
+//     key: "profile",
+//     icon: <Icon fontSize="small">person</Icon>,
+//     route: "/dashboard",
+//     component: <Profile />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "Sign In",
+//     key: "sign-in",
+//     icon: <Icon fontSize="small">login</Icon>,
+//     route: "/sign-in",
+//     component: <SignIn />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "Sign Up",
+//     key: "sign-up",
+//     icon: <Icon fontSize="small">assignment</Icon>,
+//     route: "/sign-up",
+//     component: <SignUp />,
+//   },
+//   {
+//     route: "/parking-location/:id",
+//     component: <ParkingLocation />,
+//   },
+//   {
+//     type: "collapse",
+//     name: "Profile Rentee",
+//     key: "profile-rentee",
+//     icon: <Icon fontSize="small">person</Icon>,
+//     route: "/profile-rentee",
+//     component: <ProfilePage_rentee />,
+//     title: "Rentee Profile",
+//     titleTypographyProps: { align: "center" },
+//   },
+//   {
+//     type: "collapse",
+//     name: "Renter Profile",
+//     key: "profile-renter",
+//     icon: <Icon fontSize="small">person</Icon>,
+//     route: "/profile-renter",
+//     component: <ProfilePage_renter />,
+//     title: "Renter Profile",
+//     titleTypographyProps: { align: "center" },
+//   },
+//   {
+//     route: "/paymentMethod",
+//     component: <PaymentMethod />,
+//   },
+// ];
+// export default routes;

@@ -13,12 +13,12 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 */
 
-import { useState } from "react";
+import React, { useState } from "react";
+import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 // react-router-dom components
 import { Link } from "react-router-dom";
-
 // @mui material components
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
@@ -43,7 +43,9 @@ import BasicLayout from "layouts/authentication/components/BasicLayout";
 import bgImage from "assets/images/bg-sign-in-basic.jpeg";
 
 function Basic() {
+  const { login, userRole } = useAuth();
   const [rememberMe, setRememberMe] = useState(false);
+  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
   const handleSetRememberMe = () => setRememberMe(!rememberMe);
   const [errorMessage, setErrorMessage] = useState("");
@@ -70,9 +72,7 @@ function Basic() {
       );
 
       if (renterResponse.status === 200) {
-        // If renter login is successful, navigate to dashboard
         const { email, token } = renterResponse.data;
-
         // Validate renter token
         const validateResponse = await axios.get(
           "http://localhost:8080/api/renter/validate",
@@ -82,16 +82,21 @@ function Basic() {
             },
           }
         );
-
         // Store renter info and token in sessionStorage
         sessionStorage.setItem("userType", "renter");
         sessionStorage.setItem("userEmail", email);
         sessionStorage.setItem("token", token);
+
+        // Call login with role
+        login("renter"); // Set the user as authenticated with role
+        console.log("renter logged in");
+        console.log("User role set to renter"); // Debugging log
+        //console.log("Current user role:", userRole); // Check userRole immediately after login
+
         navigate("/dashboard");
         setMessage(
           `Login successful! Token is valid for user: ${validateResponse.data}`
         );
-
         return; // Exit early, no need to check rentee login
       }
     } catch (error) {
@@ -109,13 +114,7 @@ function Basic() {
         );
 
         if (renteeResponse.status === 200) {
-          // If rentee login is successful, navigate to dashboard
           const { email, token } = renteeResponse.data;
-
-          // Store rentee info and token in sessionStorage
-          sessionStorage.setItem("userType", "rentee");
-          sessionStorage.setItem("userEmail", email);
-          sessionStorage.setItem("token", token);
 
           // Validate rentee token
           const validateResponse = await axios.get(
@@ -126,6 +125,18 @@ function Basic() {
               },
             }
           );
+
+          // Store rentee info and token in sessionStorage
+          sessionStorage.setItem("userType", "rentee");
+          sessionStorage.setItem("userEmail", email);
+          sessionStorage.setItem("token", token);
+
+          // Call login with role
+          login("rentee"); // Set the user as authenticated with role
+          console.log("rentee logged in");
+          console.log("User role set to renter"); // Debugging log
+          //console.log("Current user role:", userRole); // Check userRole immediately after login
+
           navigate("/dashboard");
           setMessage(
             `Login successful! Token is valid for user: ${validateResponse.data}`
