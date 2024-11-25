@@ -48,6 +48,7 @@ import SignIn from "layouts/authentication/sign-in";
 import SignUp from "layouts/authentication/sign-up";
 import ParkingLocation from "layouts/parking-location";
 import PostParkingLocation from "layouts/parking-location/post_parking_location";
+import Reservations from "layouts/reservations"; // Adjust the path as necessary
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -68,6 +69,14 @@ const routes = [
     icon: <Icon fontSize="small">add_location</Icon>,
     route: "/post-parking-location",
     component: <PostParkingLocation />,
+  },
+  {
+    type: "collapse",
+    name: "My Reservations",
+    key: "my-reservations",
+    icon: <Icon fontSize="small">book</Icon>,
+    route: "/my-reservations",
+    component: <Reservations />,
   },
   {
     type: "collapse",
