@@ -99,25 +99,25 @@ export default function App() {
     document.scrollingElement.scrollTop = 0;
   }, [pathname]);
 
-  // const getRoutes = (allRoutes) =>
-  //   allRoutes.map((route) => {
-  //     if (route.collapse) {
-  //       return getRoutes(route.collapse);
-  //     }
+  const getRoutes = (allRoutes) =>
+    allRoutes.map((route) => {
+      if (route.collapse) {
+        return getRoutes(route.collapse);
+      }
 
-  //     if (route.route) {
-  //       return (
-  //         <Route
-  //           exact
-  //           path={route.route}
-  //           element={route.component}
-  //           key={route.key}
-  //         />
-  //       );
-  //     }
+      if (route.route) {
+        return (
+          <Route
+            exact
+            path={route.route}
+            element={route.component}
+            key={route.key}
+          />
+        );
+      }
 
-  //     return null;
-  //   });
+      return null;
+    });
 
   return (
     <AuthProvider>
@@ -146,19 +146,14 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
+          {sessionStorage.getItem("userType") === "renter" ? (
+            getRoutes(renterRoutes)
+          ) : sessionStorage.getItem("userType") === "rentee" ? (
+            getRoutes(renteeRoutes)
+          ) : (
+            <Route path="*" element={<Navigate to="/sign-in" />} />
+          )}
           <Route path="/sign-in" element={<SignIn />} />
-          <Route
-            path="/dashboard"
-            element={
-              <PrivateRoute>
-                {sessionStorage.getItem("userType") === "renter" ? (
-                  <RenterDashboard />
-                ) : (
-                  <RenteeDashboard />
-                )}
-              </PrivateRoute>
-            }
-          />
           <Route path="*" element={<Navigate to="/sign-in" />} />
         </Routes>
       </ThemeProvider>
@@ -175,36 +170,3 @@ const PrivateRoute = ({ children }) => {
 PrivateRoute.propTypes = {
   children: PropTypes.node.isRequired, // Specify that children is required and of type node
 };
-
-//{
-/* <Route
-path="/dashboard"
-element={
-  <PrivateRoute>
-    {userRole === "renter" ? (
-      <RenterDashboard />
-    ) : (
-      <RenteeDashboard />
-    )}
-  </PrivateRoute>
-}
-/>
-{getRoutes(routes)} */
-//}
-
-// {userRole === "renter" &&
-//   renterRoutes.map((route) => (
-//     <Route
-//       key={route.key}
-//       path={route.route}
-//       element={route.component}
-//     />
-//   ))}
-// {userRole === "rentee" &&
-//   renteeRoutes.map((route) => (
-//     <Route
-//       key={route.key}
-//       path={route.route}
-//       element={route.component}
-//     />
-//   ))}
