@@ -36,6 +36,7 @@ import brandDark from "assets/images/logo-ct-dark.png";
 
 // SignIn component
 import SignIn from "./layouts/authentication/sign-in";
+import SignUp from "./layouts/authentication/sign-up";
 
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import RenterDashboard from "./layouts/dashboard/renter-dashboard";
@@ -146,6 +147,8 @@ export default function App() {
         )}
         {layout === "vr" && <Configurator />}
         <Routes>
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
           {sessionStorage.getItem("userType") === "renter" ? (
             getRoutes(renterRoutes)
           ) : sessionStorage.getItem("userType") === "rentee" ? (
@@ -153,7 +156,6 @@ export default function App() {
           ) : (
             <Route path="*" element={<Navigate to="/sign-in" />} />
           )}
-          <Route path="/sign-in" element={<SignIn />} />
           <Route path="*" element={<Navigate to="/sign-in" />} />
         </Routes>
       </ThemeProvider>
