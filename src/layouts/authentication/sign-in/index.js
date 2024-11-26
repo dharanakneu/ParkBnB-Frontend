@@ -72,7 +72,6 @@ function Basic() {
       );
 
       if (renterResponse.status === 200) {
-
         // If renter login is successful, navigate to dashboard
         const { id, email, token } = renterResponse.data;
 
@@ -118,7 +117,6 @@ function Basic() {
         );
 
         if (renteeResponse.status === 200) {
-
           // If rentee login is successful, navigate to dashboard
           const { id, email, token } = renteeResponse.data;
 
@@ -131,13 +129,12 @@ function Basic() {
               },
             }
           );
-          
+
           // Store rentee info and token in sessionStorage
           sessionStorage.setItem("userType", "rentee");
           sessionStorage.setItem("userId", id);
           sessionStorage.setItem("userEmail", email);
           sessionStorage.setItem("token", token);
-
 
           // Call login with role
           login("rentee"); // Set the user as authenticated with role
