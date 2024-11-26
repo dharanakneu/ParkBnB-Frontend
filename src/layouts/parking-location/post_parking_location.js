@@ -15,6 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { styled } from "@mui/material/styles";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -35,7 +36,7 @@ const PostParkingLocation = () => {
     state: "MA",
     country: "USA",
     postalcode: "",
-    renterId: 2,
+    renterId: sessionStorage.getItem("userId"),
   });
   const [imageFile, setImageFile] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -97,11 +98,7 @@ const PostParkingLocation = () => {
   };
 
   return (
-    <Grid
-      container
-      justifyContent="center"
-      style={{ padding: "20px", marginLeft: "120px" }}
-    >
+    <DashboardLayout>
       <Grid item xs={12} sm={8} md={6}>
         <Card variant="outlined">
           <CardContent>
@@ -229,7 +226,7 @@ const PostParkingLocation = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Grid>
+    </DashboardLayout>
   );
 };
 

@@ -13,6 +13,7 @@ import {
   Radio,
   Rating,
 } from "@mui/material";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 const ParkingLocation = () => {
   const { id } = useParams();
@@ -63,16 +64,22 @@ const ParkingLocation = () => {
   }, [id]);
 
   if (loading) {
-    return <CircularProgress />; // Show loading state
+    return (
+      <DashboardLayout>
+        <CircularProgress />
+      </DashboardLayout>
+    ); // Show loading state
   }
 
   if (!locationDetails) {
     return (
-      <Grid container justifyContent="center" style={{ paddingTop: "64px" }}>
-        <Grid item>
-          <Typography>No details found for this parking location.</Typography>
+      <DashboardLayout>
+        <Grid container justifyContent="center" style={{ paddingTop: "64px" }}>
+          <Grid item>
+            <Typography>No details found for this parking location.</Typography>
+          </Grid>
         </Grid>
-      </Grid>
+      </DashboardLayout>
     );
   }
 
@@ -80,12 +87,7 @@ const ParkingLocation = () => {
   const imageUrl = `http://localhost:8080/${locationDetails.parkingLocationImage}`;
 
   return (
-    <Grid
-      container
-      spacing={2}
-      justifyContent="center"
-      style={{ padding: "20px", marginLeft: "80px" }}
-    >
+    <DashboardLayout>
       <Grid item xs={12} sm={12} md={10} lg={10}>
         <Card
           variant="outlined"
@@ -238,7 +240,7 @@ const ParkingLocation = () => {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>
+    </DashboardLayout>
   );
 };
 
