@@ -1,49 +1,22 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import React, { useState } from "react";
-import { useAuth } from "../../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-// react-router-dom components
 import { Link } from "react-router-dom";
-// @mui material components
 import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
-
-// @mui icons
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
-
-// Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
 import MDButton from "components/MDButton";
-
-// Authentication layout components
 import BasicLayout from "layouts/authentication/components/BasicLayout";
-
-// Images
-import bgImage from "assets/images/bg-sign-in-basic.jpeg";
+import bgImage from "assets/images/bg-sign-up.jpg";
 
 function Basic() {
-  const { login, userRole } = useAuth();
   const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -60,22 +33,19 @@ function Basic() {
     setErrorMessage(""); // Reset previous error message
 
     try {
-      // First, try to login as a renter
       const renterResponse = await axios.post(
         "http://localhost:8080/api/renter/login",
         formData,
         {
           headers: {
-            "Content-Type": "application/json", // Ensure proper content type
+            "Content-Type": "application/json",
           },
         }
       );
 
       if (renterResponse.status === 200) {
-        // If renter login is successful, navigate to dashboard
         const { id, email, token } = renterResponse.data;
 
-        // Validate renter token
         const validateResponse = await axios.get(
           "http://localhost:8080/api/renter/validate",
           {
@@ -84,43 +54,33 @@ function Basic() {
             },
           }
         );
-        // Store renter info and token in sessionStorage
+
         sessionStorage.setItem("userType", "renter");
         sessionStorage.setItem("userId", id);
         sessionStorage.setItem("userEmail", email);
         sessionStorage.setItem("token", token);
 
-        // Call login with role
-        login("renter"); // Set the user as authenticated with role
-        console.log("renter logged in");
-        console.log("User role set to renter"); // Debugging log
-        //console.log("Current user role:", userRole); // Check userRole immediately after login
-
         navigate("/dashboard");
         setMessage(
           `Login successful! Token is valid for user: ${validateResponse.data}`
         );
-        return; // Exit early, no need to check rentee login
+        return;
       }
     } catch (error) {
-      // If renter login fails (401 or any other error), handle the rentee login
-      console.log("Renter login failed, attempting rentee login...");
       try {
         const renteeResponse = await axios.post(
           "http://localhost:8080/api/rentees/login",
           formData,
           {
             headers: {
-              "Content-Type": "application/json", // Ensure proper content type
+              "Content-Type": "application/json",
             },
           }
         );
 
         if (renteeResponse.status === 200) {
-          // If rentee login is successful, navigate to dashboard
           const { id, email, token } = renteeResponse.data;
 
-          // Validate rentee token
           const validateResponse = await axios.get(
             "http://localhost:8080/api/rentees/validate",
             {
@@ -130,28 +90,20 @@ function Basic() {
             }
           );
 
-          // Store rentee info and token in sessionStorage
           sessionStorage.setItem("userType", "rentee");
           sessionStorage.setItem("userId", id);
           sessionStorage.setItem("userEmail", email);
           sessionStorage.setItem("token", token);
 
-          // Call login with role
-          login("rentee"); // Set the user as authenticated with role
-          console.log("rentee logged in");
-          console.log("User role set to renter"); // Debugging log
-          //console.log("Current user role:", userRole); // Check userRole immediately after login
-
           navigate("/dashboard");
           setMessage(
             `Login successful! Token is valid for user: ${validateResponse.data}`
           );
-          return; // Exit early, no need to show an error
+          return;
         }
       } catch (error) {
-        // If both renter and rentee logins fail, show an error message
         setErrorMessage("Invalid email or password. Please try again.");
-        console.error(error); // Log error for debugging
+        console.error(error);
       }
     }
   };

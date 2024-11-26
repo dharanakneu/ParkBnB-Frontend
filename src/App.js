@@ -1,46 +1,16 @@
-import { useState, useEffect, useMemo } from "react";
-import PropTypes from "prop-types";
-
-// react-router components
+import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-
-// @mui material components
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import Icon from "@mui/material/Icon";
-
-// Material Dashboard 2 React components
-import MDBox from "components/MDBox";
-
-// Material Dashboard 2 React example components
 import Sidenav from "examples/Sidenav";
 import Configurator from "examples/Configurator";
-
-// Material Dashboard 2 React themes
 import theme from "assets/theme";
-
-// Material Dashboard 2 React Dark Mode themes
 import themeDark from "assets/theme-dark";
-
-// RTL plugins
-import rtlPlugin from "stylis-plugin-rtl";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
-
-// Material Dashboard 2 React contexts
 import { useMaterialUIController, setMiniSidenav } from "context";
-
-// Images
-import brandWhite from "assets/images/logo-ct.png";
-import brandDark from "assets/images/logo-ct-dark.png";
-
-// SignIn component
+import brandWhite from "assets/images/park-bnb.png";
+import brandDark from "assets/images/park-bnb.png";
 import SignIn from "./layouts/authentication/sign-in";
 import SignUp from "./layouts/authentication/sign-up";
-
-import { AuthProvider, useAuth } from "./context/AuthContext";
-import RenterDashboard from "./layouts/dashboard/renter-dashboard";
-import RenteeDashboard from "./layouts/dashboard/rentee-dashboard";
 import { renterRoutes, renteeRoutes } from "./routes";
 
 export default function App() {
@@ -55,23 +25,7 @@ export default function App() {
     darkMode,
   } = controller;
   const [onMouseEnter, setOnMouseEnter] = useState(false);
-  const [rtlCache, setRtlCache] = useState(null);
   const { pathname } = useLocation();
-  const { userRole } = useAuth();
-
-  useEffect(() => {
-    console.log("Current user role:", userRole); // Log whenever userRole changes
-  }, [userRole]);
-
-  // Cache for the rtl
-  useMemo(() => {
-    const cacheRtl = createCache({
-      key: "rtl",
-      stylisPlugins: [rtlPlugin],
-    });
-
-    setRtlCache(cacheRtl);
-  }, []);
 
   // Open sidenav when mouse enter on mini sidenav
   const handleOnMouseEnter = () => {
@@ -121,54 +75,44 @@ export default function App() {
     });
 
   return (
-    <AuthProvider>
-      <ThemeProvider theme={darkMode ? themeDark : theme}>
-        <CssBaseline />
-        {layout === "dashboard" && (
-          <>
-            <Sidenav
-              color={sidenavColor}
-              brand={
-                (transparentSidenav && !darkMode) || whiteSidenav
-                  ? brandDark
-                  : brandWhite
-              }
-              brandName="Park BnB"
-              routes={
-                sessionStorage.getItem("userType") === "renter"
-                  ? renterRoutes
-                  : renteeRoutes
-              }
-              onMouseEnter={handleOnMouseEnter}
-              onMouseLeave={handleOnMouseLeave}
-            />
-            <Configurator />
-          </>
-        )}
-        {layout === "vr" && <Configurator />}
-        <Routes>
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          {sessionStorage.getItem("userType") === "renter" ? (
-            getRoutes(renterRoutes)
-          ) : sessionStorage.getItem("userType") === "rentee" ? (
-            getRoutes(renteeRoutes)
-          ) : (
-            <Route path="*" element={<Navigate to="/sign-in" />} />
-          )}
+    <ThemeProvider theme={darkMode ? themeDark : theme}>
+      <CssBaseline />
+      {layout === "dashboard" && (
+        <>
+          <Sidenav
+            color={sidenavColor}
+            brand={
+              (transparentSidenav && !darkMode) || whiteSidenav
+                ? brandDark
+                : brandWhite
+            }
+            brandName="Park BnB"
+            routes={
+              sessionStorage.getItem("userType") === "renter"
+                ? renterRoutes
+                : sessionStorage.getItem("userType") === "rentee"
+                ? renteeRoutes
+                : []
+            }
+            onMouseEnter={handleOnMouseEnter}
+            onMouseLeave={handleOnMouseLeave}
+          />
+          <Configurator />
+        </>
+      )}
+      {layout === "vr" && <Configurator />}
+      <Routes>
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/sign-up" element={<SignUp />} />
+        {sessionStorage.getItem("userType") === "renter" ? (
+          getRoutes(renterRoutes)
+        ) : sessionStorage.getItem("userType") === "rentee" ? (
+          getRoutes(renteeRoutes)
+        ) : (
           <Route path="*" element={<Navigate to="/sign-in" />} />
-        </Routes>
-      </ThemeProvider>
-    </AuthProvider>
+        )}
+        <Route path="*" element={<Navigate to="/sign-in" />} />
+      </Routes>
+    </ThemeProvider>
   );
 }
-
-const PrivateRoute = ({ children }) => {
-  const { isAuthenticated } = useAuth();
-  return isAuthenticated ? children : <Navigate to="/sign-in" />;
-};
-
-// Define prop types for PrivateRoute
-PrivateRoute.propTypes = {
-  children: PropTypes.node.isRequired, // Specify that children is required and of type node
-};

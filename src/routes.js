@@ -9,6 +9,7 @@ import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import RenteeDashboard from "layouts/dashboard/rentee-dashboard";
 import RenterDashboard from "layouts/dashboard/renter-dashboard";
 import SearchParkingLocation from "layouts/search-parking";
+import Logout from "layouts/logout";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
@@ -29,15 +30,6 @@ const renterRoutes = [
     icon: <Icon fontSize="small">add_location</Icon>,
     route: "/post-parking-location",
     component: <PostParkingLocation />,
-  },
-
-  {
-    type: "collapse",
-    name: "Search Parking Location",
-    key: "search-parking-location",
-    icon: <Icon fontSize="small">add_location</Icon>,
-    route: "/search-parking-location",
-    component: <SearchParkingLocation />,
   },
   {
     type: "collapse",
@@ -65,6 +57,14 @@ const renterRoutes = [
     route: "/sign-in",
     component: <SignIn />,
   },
+  {
+    type: "collapse",
+    name: "Logout",
+    key: "logout",
+    icon: <Icon fontSize="small">logout</Icon>,
+    route: "/logout",
+    component: <Logout />,
+  },
   // renter-specific routes here
 ];
 
@@ -76,6 +76,14 @@ const renteeRoutes = [
     icon: <Icon fontSize="small">dashboard</Icon>,
     route: "/dashboard",
     component: <RenteeDashboard />,
+  },
+  {
+    type: "collapse",
+    name: "Search Parking Location",
+    key: "search-parking-location",
+    icon: <Icon fontSize="small">add_location</Icon>,
+    route: "/search-parking-location",
+    component: <SearchParkingLocation />,
   },
   {
     type: "collapse",
@@ -102,6 +110,14 @@ const renteeRoutes = [
   {
     route: "/sign-in",
     component: <SignIn />,
+  },
+  {
+    type: "collapse",
+    name: "Logout",
+    key: "logout",
+    icon: <Icon fontSize="small">logout</Icon>,
+    route: "/logout",
+    component: <Logout />,
   },
   // rentee-specific routes here
 ];

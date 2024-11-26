@@ -4,7 +4,6 @@ import { BrowserRouter } from "react-router-dom";
 import App from "App";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { AuthProvider } from "./context/AuthContext";
 import { MaterialUIControllerProvider } from "context";
 
 // Load Stripe with your public key
@@ -18,11 +17,9 @@ const root = createRoot(container);
 root.render(
   <BrowserRouter>
     <MaterialUIControllerProvider>
-      <AuthProvider>
-        <Elements stripe={stripePromise}>
-          <App />
-        </Elements>
-      </AuthProvider>
+      <Elements stripe={stripePromise}>
+        <App />
+      </Elements>
     </MaterialUIControllerProvider>
   </BrowserRouter>
 );

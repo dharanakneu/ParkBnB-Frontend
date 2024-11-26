@@ -11,6 +11,7 @@ import {
   ListItemText,
   CircularProgress,
 } from "@mui/material";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 const Reservations = () => {
   const renteeId = 1;
@@ -36,23 +37,26 @@ const Reservations = () => {
   }, [renteeId]);
 
   if (loading) {
-    return <CircularProgress />;
+    return (
+      <DashboardLayout>
+        <CircularProgress />
+      </DashboardLayout>
+    );
   }
 
   if (error) {
     return (
-      <Typography color="error">
-        Error fetching reservations: {error}
-      </Typography>
+      <DashboardLayout>
+        <Typography color="error">
+          Error fetching reservations: {error}
+        </Typography>
+      </DashboardLayout>
     );
   }
 
   return (
-    <Grid container style={{ padding: "20px", marginTop: "20px" }}>
-      <Grid item xs={2.5}>
-        {/* This can be for a sidebar if needed */}
-      </Grid>
-      <Grid item xs={9.5}>
+    <DashboardLayout>
+      <Grid item xs={10}>
         <Typography variant="h5" gutterBottom>
           My Parking Reservations
         </Typography>
@@ -79,7 +83,7 @@ const Reservations = () => {
           ))}
         </List>
       </Grid>
-    </Grid>
+    </DashboardLayout>
   );
 };
 
