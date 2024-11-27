@@ -31,6 +31,7 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 // Images
 import bgImage from "assets/images/bg-sign-up.jpg";
 import React, { useState } from "react";
+import bcrypt from "bcryptjs";
 import axios from "axios";
 
 function Cover() {
@@ -53,18 +54,23 @@ function Cover() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const hashedPassword = bcrypt.hashSync(formData.password, 10);
+    const dataToSend = {
+      ...formData,
+      password: hashedPassword,
+    };
     try {
       if (formData.role === "Renter") {
         const response = await axios.post(
           "http://localhost:8080/api/renter", // Replace with your API endpoint
-          formData
+          dataToSend
         );
         setMessage("Renter registered successfully!");
         console.log(response.data); // Optional: Log the response
       } else {
         const response = await axios.post(
           "http://localhost:8080/api/rentees", // Replace with your API endpoint
-          formData
+          dataToSend
         );
         setMessage("Rentee registered successfully!");
         console.log(response.data); // Optional: Log the response
