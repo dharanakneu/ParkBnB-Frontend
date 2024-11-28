@@ -35,7 +35,7 @@ const PaymentMethod = () => {
   const [paymentAmount, setPaymentAmount] = useState(10);
   const [cardType, setCardType] = useState(""); // For storing the selected card type
   const [cardHolderName, setCardholderName] = useState(""); // For storing the cardholder name
-  const [renteeId] = useState(1); // Example rentee ID
+  const [renteeId] = useState(sessionStorage.getItem("userId")); // Example rentee ID
   const stripe = useStripe();
   const elements = useElements();
   const [errorDialogOpen, setErrorDialogOpen] = useState(false);
