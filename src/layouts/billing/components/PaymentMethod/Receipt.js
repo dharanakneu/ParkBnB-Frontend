@@ -10,9 +10,15 @@ import {
   Divider,
   Box,
 } from "@mui/material";
+import generateReceiptPDF from "./generateReceipt"; // Import the new file
 
 const Receipt = ({ open, paymentData, onClose }) => {
   if (!paymentData) return null;
+
+  // Handle the download of the receipt
+  const handleDownload = () => {
+    generateReceiptPDF(paymentData);
+  };
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
@@ -75,20 +81,11 @@ const Receipt = ({ open, paymentData, onClose }) => {
             THANK YOU AND DRIVE SAFELY!
           </Typography>
         </Box>
-
-        {/* Barcode
-        <Box sx={{ textAlign: "center", mt: 2 }}>
-          <svg
-            viewBox="0 0 100 20"
-            width="100%"
-            height="50"
-            style={{ margin: "0 auto" }}
-          >
-            <rect x="0" y="0" width="100" height="20" fill="black" />
-          </svg>
-        </Box> */}
       </DialogContent>
       <DialogActions>
+        <Button onClick={handleDownload} color="primary">
+          Download
+        </Button>
         <Button onClick={onClose} color="primary">
           Close
         </Button>
