@@ -11,14 +11,18 @@ import {
 
 const ProfilePage_rentee = () => {
   const [profileData, setProfileData] = useState(null);
-  const renteeId = 1;
+
+  // Get user ID from session storage
+  const userId = sessionStorage.getItem("userId");
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8080/api/rentees/${renteeId}`)
-      .then((response) => setProfileData(response.data))
-      .catch((error) => console.error("Error fetching rentee data:", error));
-  }, []);
+    if (userId) {
+      axios
+        .get(`http://localhost:8080/api/rentees/${userId}`)
+        .then((response) => setProfileData(response.data))
+        .catch((error) => console.error("Error fetching rentee data:", error));
+    }
+  }, [userId]);
 
   return (
     <Box
@@ -67,20 +71,10 @@ const ProfilePage_rentee = () => {
               >
                 {profileData.firstName} {profileData.lastName}
               </Typography>
-              <Typography
-                sx={{
-                  color: "text.secondary",
-                  marginTop: 1,
-                }}
-              >
+              <Typography sx={{ color: "text.secondary", marginTop: 1 }}>
                 Email: {profileData.email}
               </Typography>
-              <Typography
-                sx={{
-                  color: "text.secondary",
-                  marginTop: 1,
-                }}
-              >
+              <Typography sx={{ color: "text.secondary", marginTop: 1 }}>
                 Phone: {profileData.phone}
               </Typography>
             </Box>
