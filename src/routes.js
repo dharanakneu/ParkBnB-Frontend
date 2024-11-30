@@ -9,6 +9,7 @@ import PaymentMethod from "layouts/billing/components/PaymentMethod";
 import RenteeDashboard from "layouts/dashboard/rentee-dashboard";
 import RenterDashboard from "layouts/dashboard/renter-dashboard";
 import SearchParkingLocation from "layouts/search-parking";
+import EditDeleteParkingLocation from "layouts/edit-delete-parking-renter";
 import Logout from "layouts/logout";
 
 // @mui icons
@@ -38,6 +39,14 @@ const renterRoutes = [
     icon: <Icon fontSize="small">book</Icon>,
     route: "/my-reservations",
     component: <Reservations />,
+  },
+  {
+    type: "collapse",
+    name: "View Parking Location",
+    key: "edit-delete-parking-renter",
+    icon: <Icon fontSize="small">edit_delete_parking_Location</Icon>,
+    route: "/edit-delete-parking-renter",
+    component: <EditDeleteParkingLocation />,
   },
   {
     type: "collapse",
@@ -85,6 +94,7 @@ const renteeRoutes = [
     route: "/search-parking-location",
     component: <SearchParkingLocation />,
   },
+
   {
     type: "collapse",
     name: "Profile",
