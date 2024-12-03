@@ -9,10 +9,16 @@ import {
   ListItem,
   Button,
   CircularProgress,
+  Modal,
+  Box,
+  TextField,
+  Rating,
 } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import CardActions from "@mui/material/CardActions";
 import CardMedia from "@mui/material/CardMedia";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 const Reservations = () => {
   const renteeId = sessionStorage.getItem("userId");
@@ -20,6 +26,12 @@ const Reservations = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
+
+  // Modal state
+  const [open, setOpen] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [selectedReservation, setSelectedReservation] = useState(null);
 
   const fetchReservations = async () => {
     try {
@@ -41,6 +53,32 @@ const Reservations = () => {
   useEffect(() => {
     fetchReservations();
   }, [renteeId]);
+
+  const handleOpen = (reservation) => {
+    setSelectedReservation(reservation);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setRating(0);
+    setComment("");
+  };
+
+  const handleSubmit = async () => {
+    try {
+      await axios.post(`http://localhost:8080/api/reviews`, {
+        rating,
+        comment,
+        parkingLocationId: selectedReservation.parkingSpot.parkingLocation.id,
+        renteeId: renteeId,
+      });
+      handleClose(); // Close the modal after submission
+      // Optionally, refresh the reservations or show a success message
+    } catch (error) {
+      console.error("Error submitting review:", error);
+    }
+  };
 
   const getCurrentLocation = () => {
     return new Promise((resolve, reject) => {
@@ -170,7 +208,12 @@ const Reservations = () => {
                               Navigate to Location
                             </Button>
                           )}
-                          <Button size="small">Leave a Review</Button>
+                          <Button
+                            size="small"
+                            onClick={() => handleOpen(reservation)}
+                          >
+                            Leave a Review
+                          </Button>
                         </CardActions>
                       </CardContent>
                     </Grid>
@@ -181,6 +224,64 @@ const Reservations = () => {
           </List>
         )}
       </Grid>
+
+      {/* Modal for Review */}
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mt: -2 }}
+          >
+            <Typography variant="h6" component="h2">
+              Leave a Review
+            </Typography>
+            <IconButton onClick={handleClose} aria-label="close">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+          <Rating
+            name="rating"
+            value={rating}
+            precision={0.5}
+            sx={{ mt: 1 }}
+            onChange={(event, newValue) => {
+              setRating(newValue);
+            }}
+          />
+          <TextField
+            label="Comment"
+            multiline
+            rows={4}
+            variant="outlined"
+            fullWidth
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            sx={{ mt: 0 }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSubmit}
+            sx={{ mt: 3 }}
+            style={{ color: "white" }}
+          >
+            Submit Review
+          </Button>
+        </Box>
+      </Modal>
     </DashboardLayout>
   );
 };
