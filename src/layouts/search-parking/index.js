@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 // Basic CSS for card styles and loading indicator
 const cardStyle = {
@@ -77,7 +78,7 @@ const SearchParkingLocation = () => {
   }, []); // Run only once when the component is loaded
 
   return (
-    <div style={{ margin: "20px" }}>
+    <DashboardLayout>
       <h3>Nearby Parking Locations</h3>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -120,7 +121,7 @@ const SearchParkingLocation = () => {
       ) : (
         <p>No parking locations found in your area.</p>
       )}
-    </div>
+    </DashboardLayout>
   );
 };
 

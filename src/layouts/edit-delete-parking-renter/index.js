@@ -16,17 +16,15 @@ function EditDeleteParkingLocation() {
   const [locations, setLocations] = useState([]);
   const [spots, setSpots] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
-
-  const [isEditingLocation, setIsEditingLocation] = useState(false); // For editing location
-  const [editLocationData, setEditLocationData] = useState({}); // Location data to edit
-  const [isEditingSpot, setIsEditingSpot] = useState(false); // For editing spot
-  const [editSpotData, setEditSpotData] = useState({}); // Spot data to edit
-
-  const renterId = sessionStorage.getItem("userId"); // Fetch renterId from session storage
+  const [isEditingLocation, setIsEditingLocation] = useState(false);
+  const [editLocationData, setEditLocationData] = useState({});
+  const [isEditingSpot, setIsEditingSpot] = useState(false);
+  const [editSpotData, setEditSpotData] = useState({});
+  const renterId = sessionStorage.getItem("userId");
 
   // Fetch parking locations for the logged-in renter
   const fetchParkingLocations = async () => {
-    if (!renterId) return; // Ensure renterId is present
+    if (!renterId) return;
     try {
       const response = await axios.get(
         `http://localhost:8080/api/parkinglocation/renter/${renterId}`
@@ -39,7 +37,12 @@ function EditDeleteParkingLocation() {
 
   // Fetch parking spots for a specific location
   const fetchParkingSpots = async (locationId) => {
-    if (!locationId) return;
+    if (selectedLocation === locationId) {
+      // Toggle visibility by clearing state
+      setSpots([]);
+      setSelectedLocation(null);
+      return;
+    }
     try {
       const response = await axios.get(
         `http://localhost:8080/api/parkingspot/location/${locationId}`
@@ -51,11 +54,37 @@ function EditDeleteParkingLocation() {
     }
   };
 
+  // Toggle edit form for a location
+  const toggleEditLocation = (location) => {
+    if (isEditingLocation && editLocationData.id === location.id) {
+      setIsEditingLocation(false);
+      setEditLocationData({});
+    } else {
+      setIsEditingLocation(true);
+      setEditLocationData(location);
+    }
+  };
+
+  // Toggle edit form for a parking spot
+  const toggleEditSpot = (spot) => {
+    if (isEditingSpot && editSpotData.id === spot.id) {
+      setIsEditingSpot(false);
+      setEditSpotData({});
+    } else {
+      setIsEditingSpot(true);
+      setEditSpotData(spot);
+    }
+  };
+
   // Delete a parking location
   const deleteParkingLocation = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/api/parkinglocation/${id}`);
-      fetchParkingLocations(); // Refresh locations after deletion
+      fetchParkingLocations();
+      if (selectedLocation === id) {
+        setSpots([]);
+        setSelectedLocation(null);
+      }
     } catch (error) {
       console.error("Error deleting parking location:", error);
     }
@@ -65,35 +94,35 @@ function EditDeleteParkingLocation() {
   const deleteParkingSpot = async (id) => {
     try {
       await axios.delete(`http://localhost:8080/api/parkingspot/${id}`);
-      fetchParkingSpots(selectedLocation); // Refresh spots for the selected location
+      fetchParkingSpots(selectedLocation);
     } catch (error) {
       console.error("Error deleting parking spot:", error);
     }
   };
 
-  // Edit and update a parking location
+  // Edit a parking location
   const editParkingLocation = async () => {
     try {
       await axios.put(
         `http://localhost:8080/api/parkinglocation/${editLocationData.id}`,
         editLocationData
       );
-      fetchParkingLocations(); // Refresh locations after update
-      setIsEditingLocation(false); // Close the edit form
+      fetchParkingLocations();
+      setIsEditingLocation(false);
     } catch (error) {
       console.error("Error editing parking location:", error);
     }
   };
 
-  // Edit and update a parking spot
+  // Edit a parking spot
   const editParkingSpot = async () => {
     try {
       await axios.put(
         `http://localhost:8080/api/parkingspot/${editSpotData.id}`,
         editSpotData
       );
-      fetchParkingSpots(selectedLocation); // Refresh spots after update
-      setIsEditingSpot(false); // Close the edit form
+      fetchParkingSpots(selectedLocation);
+      setIsEditingSpot(false);
     } catch (error) {
       console.error("Error editing parking spot:", error);
     }
@@ -121,14 +150,10 @@ function EditDeleteParkingLocation() {
           <List>
             {locations.map((location) => (
               <Box key={location.id}>
-                <ListItem
-                  sx={{
-                    justifyContent: "center", // Center the list items
-                  }}
-                >
+                <ListItem sx={{ justifyContent: "center" }}>
                   <ListItemText
                     primary={`${location.street}, ${location.city}`}
-                    secondary={`${location.state},${location.postalcode}`}
+                    secondary={`${location.state}, ${location.postalcode}`}
                   />
                   <Button
                     variant="contained"
@@ -136,7 +161,9 @@ function EditDeleteParkingLocation() {
                     onClick={() => fetchParkingSpots(location.id)}
                     sx={{ mr: 2 }}
                   >
-                    View Spots
+                    {selectedLocation === location.id
+                      ? "Hide Spots"
+                      : "View Spots"}
                   </Button>
                   <Button
                     variant="contained"
@@ -149,12 +176,11 @@ function EditDeleteParkingLocation() {
                   <Button
                     variant="contained"
                     color="black"
-                    onClick={() => {
-                      setIsEditingLocation(true);
-                      setEditLocationData(location);
-                    }}
+                    onClick={() => toggleEditLocation(location)}
                   >
-                    Edit
+                    {isEditingLocation && editLocationData.id === location.id
+                      ? "Cancel Edit"
+                      : "Edit"}
                   </Button>
                 </ListItem>
                 <Divider />
@@ -199,10 +225,13 @@ function EditDeleteParkingLocation() {
               {spots.map((spot) => (
                 <Box key={spot.id}>
                   <ListItem>
-                    <ListItemText primary={`Price: $${spot.pricePerHour}`} />
+                    <ListItemText
+                      primary={`Spot Number: ${spot.spotNumber}, Type: ${spot.spotType}`}
+                      secondary={`Price: $${spot.pricePerHour}`}
+                    />
                     <Button
                       variant="contained"
-                      color="error"
+                      color="black"
                       onClick={() => deleteParkingSpot(spot.id)}
                       sx={{ mr: 2 }}
                     >
@@ -210,12 +239,12 @@ function EditDeleteParkingLocation() {
                     </Button>
                     <Button
                       variant="contained"
-                      onClick={() => {
-                        setIsEditingSpot(true);
-                        setEditSpotData(spot);
-                      }}
+                      color="black"
+                      onClick={() => toggleEditSpot(spot)}
                     >
-                      Edit
+                      {isEditingSpot && editSpotData.id === spot.id
+                        ? "Cancel Edit"
+                        : "Edit"}
                     </Button>
                   </ListItem>
                   <Divider />
@@ -229,6 +258,30 @@ function EditDeleteParkingLocation() {
         {isEditingSpot && (
           <Box sx={{ mt: 4 }}>
             <Typography variant="h6">Edit Parking Spot</Typography>
+            <TextField
+              fullWidth
+              label="Spot Number"
+              value={editSpotData.spotNumber || ""}
+              onChange={(e) =>
+                setEditSpotData({
+                  ...editSpotData,
+                  spotNumber: e.target.value,
+                })
+              }
+              sx={{ my: 2 }}
+            />
+            <TextField
+              fullWidth
+              label="Spot Type"
+              value={editSpotData.spotType || ""}
+              onChange={(e) =>
+                setEditSpotData({
+                  ...editSpotData,
+                  spotType: e.target.value,
+                })
+              }
+              sx={{ my: 2 }}
+            />
             <TextField
               fullWidth
               label="Price per Hour"
