@@ -1,25 +1,14 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
-// react-router-dom components
+import React, { useState } from "react";
+import bcrypt from "bcryptjs";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-// @mui material components
+// Material-UI components
 import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
-// Material Dashboard 2 React components
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
+// Material Dashboard components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDInput from "components/MDInput";
@@ -30,12 +19,10 @@ import CoverLayout from "layouts/authentication/components/CoverLayout";
 
 // Images
 import bgImage from "assets/images/bg-sign-up.jpg";
-import React, { useState } from "react";
-import bcrypt from "bcryptjs";
-import axios from "axios";
 
 function Cover() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -44,7 +31,16 @@ function Cover() {
     phone: "",
     role: "",
   });
-  const [message, setMessage] = useState("");
+
+  const [notification, setNotification] = useState({
+    open: false,
+    severity: "",
+    message: "",
+  });
+
+  const handleNotificationClose = () =>
+    setNotification({ ...notification, open: false });
+
   const handleChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -52,35 +48,83 @@ function Cover() {
     }));
   };
 
+  const validateForm = () => {
+    const { firstName, lastName, password, email, phone, role } = formData;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{10}$/;
+
+    if (!firstName || !lastName || !password || !email || !phone || !role) {
+      setNotification({
+        open: true,
+        severity: "error",
+        message: "All fields are required. Please fill out the entire form.",
+      });
+      return false;
+    }
+    if (!emailRegex.test(email)) {
+      setNotification({
+        open: true,
+        severity: "error",
+        message: "Please enter a valid email address.",
+      });
+      return false;
+    }
+    if (!phoneRegex.test(phone)) {
+      setNotification({
+        open: true,
+        severity: "error",
+        message: "Phone number must be 10 digits.",
+      });
+      return false;
+    }
+    if (password.length < 6) {
+      setNotification({
+        open: true,
+        severity: "error",
+        message: "Password must be at least 6 characters long.",
+      });
+      return false;
+    }
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     const hashedPassword = bcrypt.hashSync(formData.password, 10);
-    const dataToSend = {
-      ...formData,
-      password: hashedPassword,
-    };
+    const dataToSend = { ...formData, password: hashedPassword };
+
     try {
-      if (formData.role === "Renter") {
-        const response = await axios.post(
-          "http://localhost:8080/api/renter", // Replace with your API endpoint
-          dataToSend
-        );
-        setMessage("Renter registered successfully!");
-        console.log(response.data); // Optional: Log the response
-      } else {
-        const response = await axios.post(
-          "http://localhost:8080/api/rentees", // Replace with your API endpoint
-          dataToSend
-        );
-        setMessage("Rentee registered successfully!");
-        console.log(response.data); // Optional: Log the response
-      }
+      const endpoint =
+        formData.role === "Renter"
+          ? "http://localhost:8080/api/renter"
+          : "http://localhost:8080/api/rentees";
+
+      const response = await axios.post(endpoint, dataToSend);
+      setNotification({
+        open: true,
+        severity: "success",
+        message: response.data.message || "User registered successfully!",
+      });
+      navigate("/sign-in");
     } catch (error) {
-      setMessage("An error occurred during signup.");
-      console.error(error);
+      if (error.response && error.response.data.message) {
+        setNotification({
+          open: true,
+          severity: "error",
+          message: error.response.data.message,
+        });
+      } else {
+        setNotification({
+          open: true,
+          severity: "error",
+          message: "An error occurred during sign-up. Please try again.",
+        });
+      }
     }
-    navigate("/sign-in");
   };
+
   return (
     <CoverLayout image={bgImage}>
       <Card>
@@ -168,26 +212,20 @@ function Cover() {
               <MDTypography variant="standard">Select Role:</MDTypography>
               <MDBox display="flex" flexDirection="column">
                 <MDBox display="flex" alignItems="center" mb={2}>
-                  <MDInput
-                    type="radio"
+                  <Checkbox
                     name="role"
                     value="Renter"
-                    variant="standard"
                     onChange={handleChange}
                     checked={formData.role === "Renter"}
-                    required
                   />
                   <MDTypography ml={1}>Renter</MDTypography>
                 </MDBox>
                 <MDBox display="flex" alignItems="center" mb={2}>
-                  <MDInput
-                    type="radio"
+                  <Checkbox
                     name="role"
                     value="Rentee"
-                    variant="standard"
                     onChange={handleChange}
                     checked={formData.role === "Rentee"}
-                    required
                   />
                   <MDTypography ml={1}>Rentee</MDTypography>
                 </MDBox>
@@ -196,7 +234,7 @@ function Cover() {
 
             <MDBox mt={4} mb={1}>
               <MDButton type="submit" variant="gradient" color="info" fullWidth>
-                sign in
+                Sign Up
               </MDButton>
             </MDBox>
             <MDBox mt={3} mb={1} textAlign="center">
@@ -217,6 +255,20 @@ function Cover() {
           </MDBox>
         </MDBox>
       </Card>
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={3000}
+        onClose={handleNotificationClose}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleNotificationClose}
+          severity={notification.severity}
+          sx={{ width: "100%" }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </CoverLayout>
   );
 }
