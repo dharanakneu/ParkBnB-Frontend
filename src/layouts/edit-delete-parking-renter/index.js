@@ -226,7 +226,11 @@ function EditDeleteParkingLocation() {
                 <Box key={spot.id}>
                   <ListItem>
                     <ListItemText
-                      primary={`Spot Number: ${spot.spotNumber}, Type: ${spot.spotType}`}
+                      primary={`Spot Number: ${spot.spotNumber}, Type: ${
+                        spot.spotType
+                      }, Availability: ${
+                        spot.is_available ? "Reserved" : "Available"
+                      }`}
                       secondary={`Price: $${spot.pricePerHour}`}
                     />
                     <Button
