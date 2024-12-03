@@ -6,6 +6,8 @@ import Card from "@mui/material/Card";
 import Switch from "@mui/material/Switch";
 import Grid from "@mui/material/Grid";
 import MuiLink from "@mui/material/Link";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -18,19 +20,43 @@ import bgImage from "assets/images/bg-sign-up.jpg";
 
 function Basic() {
   const [rememberMe, setRememberMe] = useState(false);
-  const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const handleSetRememberMe = () => setRememberMe(!rememberMe);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
   const navigate = useNavigate();
+
+  const handleSetRememberMe = () => setRememberMe(!rememberMe);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validate = () => {
+    const errors = {};
+    if (!formData.email) {
+      errors.email = "Email is required.";
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = "Email is invalid.";
+    }
+
+    if (!formData.password) {
+      errors.password = "Password is required.";
+    } else if (formData.password.length < 6) {
+      errors.password = "Password must be at least 6 characters long.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Reset previous error message
+
+    if (!validate()) return; // Stop if validation fails
 
     try {
       const renterResponse = await axios.post(
@@ -46,24 +72,17 @@ function Basic() {
       if (renterResponse.status === 200) {
         const { id, email, token } = renterResponse.data;
 
-        const validateResponse = await axios.get(
-          "http://localhost:8080/api/renter/validate",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
         sessionStorage.setItem("userType", "renter");
         sessionStorage.setItem("userId", id);
         sessionStorage.setItem("userEmail", email);
         sessionStorage.setItem("token", token);
 
+        setNotification({
+          open: true,
+          message: "Login successful!",
+          severity: "success",
+        });
         navigate("/dashboard");
-        setMessage(
-          `Login successful! Token is valid for user: ${validateResponse.data}`
-        );
         return;
       }
     } catch (error) {
@@ -81,31 +100,31 @@ function Basic() {
         if (renteeResponse.status === 200) {
           const { id, email, token } = renteeResponse.data;
 
-          const validateResponse = await axios.get(
-            "http://localhost:8080/api/rentees/validate",
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
-
           sessionStorage.setItem("userType", "rentee");
           sessionStorage.setItem("userId", id);
           sessionStorage.setItem("userEmail", email);
           sessionStorage.setItem("token", token);
 
+          setNotification({
+            open: true,
+            message: "Login successful!",
+            severity: "success",
+          });
           navigate("/dashboard");
-          setMessage(
-            `Login successful! Token is valid for user: ${validateResponse.data}`
-          );
           return;
         }
       } catch (error) {
-        setErrorMessage("Invalid email or password. Please try again.");
-        console.error(error);
+        setNotification({
+          open: true,
+          message: "Invalid email or password. Please try again.",
+          severity: "error",
+        });
       }
     }
+  };
+
+  const handleCloseNotification = () => {
+    setNotification({ open: false, message: "", severity: "" });
   };
 
   return (
@@ -130,38 +149,7 @@ function Basic() {
             spacing={3}
             justifyContent="center"
             sx={{ mt: 1, mb: 2 }}
-          >
-            <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-              >
-                <FacebookIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-              >
-                <GitHubIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-            <Grid item xs={2}>
-              <MDTypography
-                component={MuiLink}
-                href="#"
-                variant="body1"
-                color="white"
-              >
-                <GoogleIcon color="inherit" />
-              </MDTypography>
-            </Grid>
-          </Grid>
+          ></Grid>
         </MDBox>
         <MDBox pt={4} pb={3} px={3}>
           <MDBox component="form" role="form" onSubmit={handleSubmit}>
@@ -172,6 +160,8 @@ function Basic() {
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
+                error={Boolean(formErrors.email)}
+                helperText={formErrors.email}
                 fullWidth
               />
             </MDBox>
@@ -182,6 +172,8 @@ function Basic() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
+                error={Boolean(formErrors.password)}
+                helperText={formErrors.password}
                 fullWidth
               />
             </MDBox>
@@ -220,6 +212,20 @@ function Basic() {
           </MDBox>
         </MDBox>
       </Card>
+      <Snackbar
+        open={notification.open}
+        autoHideDuration={3000}
+        onClose={handleCloseNotification}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={handleCloseNotification}
+          severity={notification.severity}
+          sx={{ width: "100%" }}
+        >
+          {notification.message}
+        </Alert>
+      </Snackbar>
     </BasicLayout>
   );
 }
