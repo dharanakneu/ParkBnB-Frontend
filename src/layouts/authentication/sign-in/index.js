@@ -189,6 +189,20 @@ function Basic() {
                 &nbsp;&nbsp;Remember me
               </MDTypography>
             </MDBox>
+            <MDBox mt={3} mb={1}>
+              <MDTypography variant="button" color="text">
+                <MDTypography
+                  component={Link}
+                  to="/forgot-password"
+                  variant="button"
+                  color="info"
+                  fontWeight="medium"
+                  textGradient
+                >
+                  Forgot Password?
+                </MDTypography>
+              </MDTypography>
+            </MDBox>
             <MDBox mt={4} mb={1}>
               <MDButton type="submit" variant="gradient" color="info" fullWidth>
                 sign in

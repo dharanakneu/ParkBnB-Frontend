@@ -14,6 +14,8 @@ import Logout from "layouts/logout";
 
 // @mui icons
 import Icon from "@mui/material/Icon";
+import ForgotPassword from "layouts/authentication/forgot-password";
+import ResetPassword from "layouts/authentication/reset-password";
 
 const renterRoutes = [
   {
@@ -67,6 +69,14 @@ const renterRoutes = [
     component: <Logout />,
   },
   // renter-specific routes here
+  {
+    route: "/forgot-password",
+    component: <ForgotPassword />,
+  },
+  {
+    route: "/reset-password",
+    component: <ResetPassword />,
+  },
 ];
 
 const renteeRoutes = [
@@ -129,6 +139,14 @@ const renteeRoutes = [
     component: <Logout />,
   },
   // rentee-specific routes here
+  {
+    route: "/forgot-password",
+    component: <ForgotPassword />,
+  },
+  {
+    route: "/reset-password",
+    component: <ResetPassword />,
+  },
 ];
 
 export { renterRoutes, renteeRoutes };

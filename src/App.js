@@ -11,7 +11,9 @@ import brandWhite from "assets/images/park-bnb.png";
 import brandDark from "assets/images/park-bnb.png";
 import SignIn from "./layouts/authentication/sign-in";
 import SignUp from "./layouts/authentication/sign-up";
+import ForgotPassword from "layouts/authentication/forgot-password";
 import { renterRoutes, renteeRoutes } from "./routes";
+import ResetPassword from "layouts/authentication/reset-password";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -104,6 +106,8 @@ export default function App() {
       <Routes>
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         {sessionStorage.getItem("userType") === "renter" ? (
           getRoutes(renterRoutes)
         ) : sessionStorage.getItem("userType") === "rentee" ? (
