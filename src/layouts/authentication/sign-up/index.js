@@ -127,7 +127,7 @@ function Cover() {
 
   return (
     <CoverLayout image={bgImage}>
-      <Card>
+      <Card style={{ marginTop: "-80px !important" }}>
         <MDBox
           variant="gradient"
           bgColor="info"
@@ -209,30 +209,55 @@ function Cover() {
               />
             </MDBox>
             <MDBox mb={1}>
-              <MDTypography variant="standard">Select Role:</MDTypography>
+              <MDTypography
+                variant="h6"
+                fontWeight={400}
+                fontSize="0.875rem"
+                color="text.secondary"
+              >
+                Select Role:
+              </MDTypography>
               <MDBox display="flex" flexDirection="column">
-                <MDBox display="flex" alignItems="center" mb={2}>
+                <MDBox display="flex" alignItems="center" mb={-1}>
                   <Checkbox
                     name="role"
                     value="Renter"
                     onChange={handleChange}
                     checked={formData.role === "Renter"}
                   />
-                  <MDTypography ml={1}>Renter</MDTypography>
+                  <MDTypography
+                    variant="h6"
+                    ml={0.5}
+                    mb={-0.5}
+                    fontWeight={400}
+                    fontSize="0.875rem"
+                    color="text.secondary"
+                  >
+                    Renter
+                  </MDTypography>
                 </MDBox>
-                <MDBox display="flex" alignItems="center" mb={2}>
+                <MDBox display="flex" alignItems="center" mb={-1}>
                   <Checkbox
                     name="role"
                     value="Rentee"
                     onChange={handleChange}
                     checked={formData.role === "Rentee"}
                   />
-                  <MDTypography ml={1}>Rentee</MDTypography>
+                  <MDTypography
+                    variant="h6"
+                    ml={0.5}
+                    mb={-0.5}
+                    fontWeight={400}
+                    fontSize="0.875rem"
+                    color="text.secondary"
+                  >
+                    Rentee
+                  </MDTypography>
                 </MDBox>
               </MDBox>
             </MDBox>
 
-            <MDBox mt={4} mb={1}>
+            <MDBox mt={1} mb={1}>
               <MDButton type="submit" variant="gradient" color="info" fullWidth>
                 Sign Up
               </MDButton>
