@@ -33,10 +33,7 @@ const ParkingLocation = () => {
       })
       .catch((error) =>
         console.error("Error fetching parking location data:", error)
-      )
-      .finally(() => {
-        setLoading(false);
-      });
+      );
 
     axios
       .get(`http://localhost:8080/api/parkinglocation/${id}/available-spots`)
