@@ -34,14 +34,6 @@ const renterRoutes = [
   },
   {
     type: "collapse",
-    name: "My Reservations",
-    key: "my-reservations",
-    icon: <Icon fontSize="small">book</Icon>,
-    route: "/my-reservations",
-    component: <Reservations />,
-  },
-  {
-    type: "collapse",
     name: "View Parking Location",
     key: "edit-delete-parking-renter",
     icon: <Icon fontSize="small">edit_delete_parking_Location</Icon>,
@@ -94,7 +86,14 @@ const renteeRoutes = [
     route: "/search-parking-location",
     component: <SearchParkingLocation />,
   },
-
+  {
+    type: "collapse",
+    name: "My Reservations",
+    key: "my-reservations",
+    icon: <Icon fontSize="small">book</Icon>,
+    route: "/my-reservations",
+    component: <Reservations />,
+  },
   {
     type: "collapse",
     name: "Profile",
