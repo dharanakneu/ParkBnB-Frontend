@@ -14,6 +14,7 @@ import SignUp from "./layouts/authentication/sign-up";
 import ForgotPassword from "layouts/authentication/forgot-password";
 import { renterRoutes, renteeRoutes } from "./routes";
 import ResetPassword from "layouts/authentication/reset-password";
+import LandingPage from "layouts/landingPage/LandingPage";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -79,7 +80,7 @@ export default function App() {
   return (
     <ThemeProvider theme={darkMode ? themeDark : theme}>
       <CssBaseline />
-      {layout === "dashboard" && (
+      {pathname !== "/" && layout === "dashboard" && (
         <>
           <Sidenav
             color={sidenavColor}
@@ -104,6 +105,7 @@ export default function App() {
       )}
       {layout === "vr" && <Configurator />}
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
