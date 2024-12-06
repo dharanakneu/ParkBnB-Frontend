@@ -1,11 +1,11 @@
 import React from "react";
 import { Container, Typography, Grid, Box } from "@mui/material";
 import "./Team.css"; // Ensure this file contains the relevant styles
-import image1 from "/Users/patelvanshi/IdeaProjects/FrontEndRepo/src/assets/images/WhatsApp Image 2024-12-04 at 19.26.14.jpeg";
-import image2 from "/Users/patelvanshi/IdeaProjects/FrontEndRepo/src/assets/images/WhatsApp Image 2024-12-05 at 00.20.39.jpeg";
-import image3 from "/Users/patelvanshi/IdeaProjects/FrontEndRepo/src/assets/images/WhatsApp Image 2024-12-04 at 22.34.09.jpeg";
-import image4 from "/Users/patelvanshi/IdeaProjects/FrontEndRepo/src/assets/images/Screenshot 2024-11-26 at 10.07.14 AM.png";
-import image5 from "/Users/patelvanshi/IdeaProjects/FrontEndRepo/src/assets/images/IMG_1987.JPG";
+import image1 from "../../assets/images/WhatsApp Image 2024-12-04 at 19.26.14.jpeg";
+import image2 from "../../assets/images/WhatsApp Image 2024-12-05 at 00.20.39.jpeg";
+import image3 from "../../assets/images/WhatsApp Image 2024-12-04 at 22.34.09.jpeg";
+import image4 from "../../assets/images/Screenshot 2024-11-26 at 10.07.14 AM.png";
+import image5 from "../../assets/images/IMG_1987.JPG";
 
 const teamMembers = [
   {

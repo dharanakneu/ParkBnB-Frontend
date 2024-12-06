@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
-import logo from "/Users/patelvanshi/IdeaProjects/FrontEndRepo/src/assets/images/loonapix_17326378291388662408.png"; // Adjust the path based on your directory structure
+import logo from "../../assets/images/loonapix_17326378291388662408.png"; // Adjust the path based on your directory structure
 
 const Header = () => {
   return (
