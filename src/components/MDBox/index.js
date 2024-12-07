@@ -33,7 +33,7 @@ const MDBox = forwardRef(
       coloredShadow,
       ...rest
     },
-    ref
+    ref,
   ) => (
     <MDBoxRoot
       {...rest}
@@ -48,7 +48,7 @@ const MDBox = forwardRef(
         coloredShadow,
       }}
     />
-  )
+  ),
 );
 
 // Setting default values for the props of MDBox

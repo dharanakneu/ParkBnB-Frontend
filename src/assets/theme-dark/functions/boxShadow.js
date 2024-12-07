@@ -26,7 +26,7 @@ function boxShadow(offset = [], radius = [], color, opacity, inset = "") {
   const [blur, spread] = radius;
 
   return `${inset} ${pxToRem(x)} ${pxToRem(y)} ${pxToRem(blur)} ${pxToRem(
-    spread
+    spread,
   )} ${rgba(color, opacity)}`;
 }
 

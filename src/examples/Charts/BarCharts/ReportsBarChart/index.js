@@ -48,7 +48,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 function ReportsBarChart({ color, title, description, date, chart }) {
@@ -72,7 +72,7 @@ function ReportsBarChart({ color, title, description, date, chart }) {
               <Bar data={data} options={options} redraw />
             </MDBox>
           ),
-          [color, chart]
+          [color, chart],
         )}
         <MDBox pt={3} pb={1} px={1}>
           <MDTypography variant="h6" textTransform="capitalize">
@@ -127,7 +127,7 @@ ReportsBarChart.propTypes = {
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   date: PropTypes.string.isRequired,
   chart: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   ).isRequired,
 };
 

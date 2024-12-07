@@ -34,7 +34,7 @@ const MDBadge = forwardRef(
       children,
       ...rest
     },
-    ref
+    ref,
   ) => (
     <MDBadgeRoot
       {...rest}
@@ -53,7 +53,7 @@ const MDBadge = forwardRef(
     >
       {children}
     </MDBadgeRoot>
-  )
+  ),
 );
 
 // Setting default values for the props of MDBadge

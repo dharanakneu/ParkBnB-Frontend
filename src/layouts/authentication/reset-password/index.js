@@ -54,7 +54,7 @@ function ResetPassword() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (renterResponse.status === 200) {
@@ -69,7 +69,7 @@ function ResetPassword() {
     } catch (error) {
       console.error(
         "Error resetting password for renter:",
-        error.response || error
+        error.response || error,
       );
 
       // If renter reset failed, try for rentee
@@ -81,7 +81,7 @@ function ResetPassword() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
 
         if (renteeResponse.status === 200) {
@@ -96,7 +96,7 @@ function ResetPassword() {
       } catch (error) {
         console.error(
           "Error resetting password for rentee:",
-          error.response || error
+          error.response || error,
         );
 
         // If both attempts fail

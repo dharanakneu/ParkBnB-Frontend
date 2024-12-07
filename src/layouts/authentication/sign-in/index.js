@@ -66,7 +66,7 @@ function Basic() {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       if (renterResponse.status === 200) {
@@ -94,7 +94,7 @@ function Basic() {
             headers: {
               "Content-Type": "application/json",
             },
-          }
+          },
         );
 
         if (renteeResponse.status === 200) {

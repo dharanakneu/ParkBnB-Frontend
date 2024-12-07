@@ -39,7 +39,7 @@ function DefaultDoughnutChart({ icon, title, description, height, chart }) {
   const { data, options } = configs(
     chart.labels || [],
     chart.datasets || {},
-    chart.cutout
+    chart.cutout,
   );
 
   const renderChart = (
@@ -80,7 +80,7 @@ function DefaultDoughnutChart({ icon, title, description, height, chart }) {
             <Doughnut data={data} options={options} redraw />
           </MDBox>
         ),
-        [chart, height]
+        [chart, height],
       )}
     </MDBox>
   );
@@ -115,7 +115,7 @@ DefaultDoughnutChart.propTypes = {
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   chart: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+    PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
   ).isRequired,
 };
 

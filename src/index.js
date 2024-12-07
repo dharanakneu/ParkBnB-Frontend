@@ -8,7 +8,7 @@ import { MaterialUIControllerProvider } from "context";
 
 // Load Stripe with your public key
 const stripePromise = loadStripe(
-  "pk_test_51QDduYP2L02lGzxVPe2NgdRL4u9ZPZDZ7Yv6tOlV7SpzJxLl4ztBhREQmWoS0RqxKEMiMPFvPyFCcEUgXBnZZu0300Ka2VxPlo"
+  "pk_test_51QDduYP2L02lGzxVPe2NgdRL4u9ZPZDZ7Yv6tOlV7SpzJxLl4ztBhREQmWoS0RqxKEMiMPFvPyFCcEUgXBnZZu0300Ka2VxPlo",
 );
 
 const container = document.getElementById("app");
@@ -21,5 +21,5 @@ root.render(
         <App />
       </Elements>
     </MaterialUIControllerProvider>
-  </BrowserRouter>
+  </BrowserRouter>,
 );
