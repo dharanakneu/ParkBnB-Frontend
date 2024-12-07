@@ -44,6 +44,7 @@ const PostParkingLocation = () => {
     },
   ]); // Initial spot
   const [openDialog, setOpenDialog] = useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -97,7 +98,7 @@ const PostParkingLocation = () => {
     e.preventDefault();
 
     if (!imageBase64) {
-      console.error("No image file selected");
+      setOpenErrorDialog(true);
       return;
     }
 
@@ -152,8 +153,16 @@ const PostParkingLocation = () => {
     ]);
   };
 
+  const handleCloseSuccessDialog = () => {
+    setOpenSuccessDialog(false);
+  };
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
+  };
+
+  const handleCloseErrorDialog = () => {
+    setOpenErrorDialog(false);
   };
 
   return (
@@ -377,6 +386,17 @@ const PostParkingLocation = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={openErrorDialog} onClose={handleCloseErrorDialog}>
+        <DialogTitle>Error</DialogTitle>
+        <DialogContent>
+          <Typography>Please upload an image before submitting.</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseErrorDialog} color="error">
             Close
           </Button>
         </DialogActions>
