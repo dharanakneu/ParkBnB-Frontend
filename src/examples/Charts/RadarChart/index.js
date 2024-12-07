@@ -53,7 +53,7 @@ ChartJS.register(
   LineElement,
   Filler,
   Tooltip,
-  Legend
+  Legend,
 );
 
 function RadarChart({ icon, title, description, height, chart }) {
@@ -106,7 +106,7 @@ function RadarChart({ icon, title, description, height, chart }) {
             <Radar data={data} options={options} redraw />
           </MDBox>
         ),
-        [chart]
+        [chart],
       )}
     </MDBox>
   );

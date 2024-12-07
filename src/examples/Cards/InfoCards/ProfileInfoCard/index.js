@@ -45,7 +45,7 @@ function ProfileInfoCard({ title, description, info, social, action, shadow }) {
       const uppercaseLetter = Array.from(el).find((i) => i.match(/[A-Z]+/));
       const newElement = el.replace(
         uppercaseLetter,
-        ` ${uppercaseLetter.toLowerCase()}`
+        ` ${uppercaseLetter.toLowerCase()}`,
       );
 
       labels.push(newElement);

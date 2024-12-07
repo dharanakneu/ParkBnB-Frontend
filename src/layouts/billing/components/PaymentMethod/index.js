@@ -50,7 +50,7 @@ const PaymentMethod = () => {
   const fetchCards = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/cards/rentee/${renteeId}`
+        `http://localhost:8080/api/cards/rentee/${renteeId}`,
       );
       setSavedCards(response.data);
     } catch (error) {
@@ -120,7 +120,7 @@ const PaymentMethod = () => {
           stripePaymentId: selectedCard.stripeCardId,
           cardId: selectedCard.id, // Replace with actual Stripe ID
           cardholderName: selectedCard.cardHolderName,
-        }
+        },
       );
       setPaymentData({
         cardHolderName: selectedCard.cardHolderName,

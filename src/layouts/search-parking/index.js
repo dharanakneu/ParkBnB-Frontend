@@ -57,7 +57,7 @@ const SearchParkingLocation = () => {
                 longitude,
                 radius,
               },
-            }
+            },
           );
           setParkingLocations(response.data);
           setError("");
@@ -68,7 +68,7 @@ const SearchParkingLocation = () => {
       },
       (err) => {
         setError(`Error fetching location: ${err.message}`);
-      }
+      },
     );
   };
 

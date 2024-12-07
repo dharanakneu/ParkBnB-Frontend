@@ -79,7 +79,7 @@ function ProfilesList({ title, profiles, shadow }) {
           )}
         </MDBox>
       </MDBox>
-    )
+    ),
   );
 
   return (

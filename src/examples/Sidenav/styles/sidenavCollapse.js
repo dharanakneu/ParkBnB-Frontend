@@ -27,7 +27,7 @@ function collapseItem(theme, ownerState) {
     background: active
       ? linearGradient(
           gradients[sidenavColor].main,
-          gradients[sidenavColor].state
+          gradients[sidenavColor].state,
         )
       : transparent.main,
     color:
