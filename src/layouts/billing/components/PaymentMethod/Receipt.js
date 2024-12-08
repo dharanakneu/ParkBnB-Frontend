@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import React from "react";
 import PropTypes from "prop-types"; // Import PropTypes
 import {
@@ -10,7 +11,7 @@ import {
   Divider,
   Box,
 } from "@mui/material";
-import generateReceiptPDF from "./generateReceipt"; // Import the new file
+import generateReceiptPDF from "./generateReceipt"; // Import the receipt generation function
 
 const Receipt = ({ open, paymentData, onClose }) => {
   if (!paymentData) return null;
@@ -20,8 +21,13 @@ const Receipt = ({ open, paymentData, onClose }) => {
     generateReceiptPDF(paymentData);
   };
 
+  // eslint-disable-next-line prettier/prettier, react/prop-types
+  const { renteeDetails, amount, parkingDetails, spotDetails, date, startTime, endTime } =
+  paymentData;
+  console.log(paymentData);
+
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="xs">
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       <DialogTitle align="center">PARKING RECEIPT</DialogTitle>
       <DialogContent>
         <Box sx={{ textAlign: "center", paddingBottom: 2 }}>
@@ -39,47 +45,80 @@ const Receipt = ({ open, paymentData, onClose }) => {
               />
             </svg>
           </Box>
-          <Typography variant="h6" fontWeight="bold" sx={{ mb: 1 }}>
-            Royal Valet Parking
+          <Typography variant="h2" fontWeight="bold" sx={{ mb: 1 }}>
+            <strong>Park BnB</strong>
           </Typography>
-          <Typography variant="body2" color="textSecondary">
-            Hill Park Ave, New York, NY, USA
-          </Typography>
-          <Typography variant="body2" color="textSecondary">
-            888-888-8888
-          </Typography>
+
+          {/* Parking Location Details */}
+          {renteeDetails && (
+            <Box sx={{ textAlign: "left", mb: 2 }}>
+              <Typography variant="body2">
+                Name - {renteeDetails.firstName + " " + renteeDetails.lastName}
+              </Typography>
+              <Typography variant="body2">
+                Email - {renteeDetails.email}
+              </Typography>
+              <Typography variant="body2">
+                Number - {renteeDetails.phone}
+              </Typography>
+            </Box>
+          )}
           <Divider sx={{ my: 2 }} />
 
+          {/* Parking Location Details */}
+          {parkingDetails && (
+            <Box sx={{ textAlign: "left", mb: 2 }}>
+              <Typography variant="h6" fontWeight="bold">
+                Parking Location:
+              </Typography>
+              <Typography variant="body2">
+                {parkingDetails.street}, {parkingDetails.city},{" "}
+                {parkingDetails.state}, {parkingDetails.country},{" "}
+                {parkingDetails.zipCode}
+              </Typography>
+            </Box>
+          )}
+
+          {/* Parking Spot Details */}
+          {spotDetails && (
+            <Box sx={{ textAlign: "left", mb: 2 }}>
+              <Typography variant="h6" fontWeight="bold">
+                Parking Spot:
+              </Typography>
+              <Typography variant="body2">
+                Spot Number: {spotDetails.spotNumber} <br />
+                Spot Type: {spotDetails.spotType}
+              </Typography>
+            </Box>
+          )}
+
           {/* Time and Date */}
-          <Typography variant="h4" sx={{ mb: 1 }}>
-            {new Date().toLocaleTimeString("en-US", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 1 }}>
-            {new Date().toLocaleDateString()}
-          </Typography>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            Space: {paymentData.parkingSpace || "621"}
-          </Typography>
-        </Box>
+          <Box sx={{ textAlign: "left", mb: 2 }}>
+            <Typography variant="h6" fontWeight="bold">
+              Parking Time:
+            </Typography>
+            <Typography variant="body2">
+              Date: {date} <br />
+              Start Time: {startTime} <br />
+              End Time: {endTime}
+            </Typography>
+          </Box>
 
-        {/* Payment Details */}
-        <Box sx={{ textAlign: "center", mb: 2 }}>
-          <Typography variant="h5" fontWeight="bold">
-            Paid: ${paymentData.amount.toFixed(2)}
-          </Typography>
-        </Box>
+          {/* Payment Details */}
+          <Box sx={{ textAlign: "center", mb: 2 }}>
+            <Typography variant="h5" fontWeight="bold">
+              Total Paid: ${amount.toFixed(2)}
+            </Typography>
+          </Box>
 
-        <Divider sx={{ my: 2 }} />
+          <Divider sx={{ my: 2 }} />
 
-        {/* Thank You Message */}
-        <Box sx={{ textAlign: "center", paddingTop: 2 }}>
-          <Typography variant="body1" sx={{ fontWeight: "medium" }}>
-            THANK YOU AND DRIVE SAFELY!
-          </Typography>
+          {/* Thank You Message */}
+          <Box sx={{ textAlign: "center", paddingTop: 2 }}>
+            <Typography variant="body1" sx={{ fontWeight: "medium" }}>
+              THANK YOU AND DRIVE SAFELY!
+            </Typography>
+          </Box>
         </Box>
       </DialogContent>
       <DialogActions>
@@ -98,8 +137,21 @@ const Receipt = ({ open, paymentData, onClose }) => {
 Receipt.propTypes = {
   open: PropTypes.bool.isRequired,
   paymentData: PropTypes.shape({
-    parkingSpace: PropTypes.string,
     amount: PropTypes.number.isRequired,
+    parkingDetails: PropTypes.shape({
+      street: PropTypes.string.isRequired,
+      city: PropTypes.string.isRequired,
+      state: PropTypes.string.isRequired,
+      country: PropTypes.string.isRequired,
+      zipCode: PropTypes.string,
+    }),
+    spotDetails: PropTypes.shape({
+      spotNumber: PropTypes.string.isRequired,
+      spotType: PropTypes.string.isRequired,
+    }),
+    date: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
   }).isRequired,
   onClose: PropTypes.func.isRequired,
 };

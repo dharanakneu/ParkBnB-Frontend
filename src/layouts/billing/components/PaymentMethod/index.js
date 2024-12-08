@@ -24,10 +24,12 @@ import {
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
+import { useLocation } from "react-router-dom";
 
 // Images
 import masterCardLogo from "assets/images/logos/mastercard.png";
 import visaLogo from "assets/images/logos/visa.png";
+// eslint-disable-next-line react/prop-types
 const PaymentMethod = () => {
   const [savedCards, setSavedCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -42,10 +44,95 @@ const PaymentMethod = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [openReceiptDialog, setOpenReceiptDialog] = useState(false);
   const [paymentData, setPaymentData] = useState(null); // Store receipt data
+  const location = useLocation();
+  const [locationDetails, setLocationDetails] = useState(null);
+  const [spotDetails, setSpotDetails] = useState(null);
+  const [renteeDetails, setRenteeDetails] = useState(null);
+
+  const { state } = location || {};
+  const {
+    date = "2025-01-01", // Default value for fallback
+    startTime = "13:00", // Default value for fallback
+    endTime = "14:00", // Default value for fallback
+    pricePerHour = 15, // Default value for fallback
+    locationId = null, // Default value for fallback
+    spotId = null, // Default value for fallback
+  } = state || {};
+
+  useEffect(() => {
+    const calculatedAmount = calculatePaymentAmount();
+    setPaymentAmount(calculatedAmount);
+  }, [date, startTime, endTime, pricePerHour]); // Dependencies for recalculating
+
+  // Calculate payment amount
+  const calculatePaymentAmount = () => {
+    if (!date || !startTime || !endTime || !pricePerHour) return 0;
+
+    // Combine the date with start and end times for proper parsing
+    const startDateTime = new Date(`${date}T${startTime}:00`);
+    const endDateTime = new Date(`${date}T${endTime}:00`);
+
+    console.log("Start Date Time: ", startDateTime);
+    console.log("End Date Time: ", endDateTime);
+
+    // Calculate the duration in milliseconds
+    const duration = endDateTime - startDateTime;
+
+    // Ensure the duration is valid
+    if (duration <= 0) {
+      console.error("Invalid time range. Start time must be before end time.");
+      return 0;
+    }
+
+    // Convert duration to hours and calculate the amount
+    const hours = Math.ceil(duration / (1000 * 60 * 60)); // Convert milliseconds to hours
+    return hours * pricePerHour;
+  };
+  console.log("Payment Amount: ", paymentAmount);
+  console.log(
+    "testing  ",
+    date,
+    startTime,
+    endTime,
+    pricePerHour,
+    locationId,
+    spotId
+  );
 
   useEffect(() => {
     fetchCards();
+
+    axios
+      .get(`http://localhost:8080/api/parkinglocation/${locationId}`)
+      .then((response) => {
+        console.log("Parking location data:", response.data);
+        setLocationDetails(response.data);
+      })
+      .catch((error) =>
+        console.error("Error fetching parking location data:", error)
+      );
+
+    axios
+      .get(`http://localhost:8080/api/parkingspot/${spotId}`)
+      .then((response) => {
+        console.log("Parking location data:", response.data);
+        setSpotDetails(response.data);
+      })
+      .catch((error) =>
+        console.error("Error fetching parking location data:", error)
+      );
+
+    axios
+      .get(`http://localhost:8080/api/rentees/${renteeId}`)
+      .then((response) => {
+        console.log("Rentee data", response.data);
+        setRenteeDetails(response.data);
+      })
+      .catch((error) =>
+        console.error("Error fetching parking location data:", error)
+      );
   }, []);
+
   // Fetch saved cards from the API
   const fetchCards = async () => {
     try {
@@ -57,6 +144,7 @@ const PaymentMethod = () => {
       console.error("Error fetching saved cards", error);
     }
   };
+
   // Handle adding a new card
   const handleAddCard = async (e) => {
     e.preventDefault();
@@ -114,7 +202,7 @@ const PaymentMethod = () => {
       const response = await axios.post(
         "http://localhost:8080/api/payments/create",
         {
-          amount: parseFloat(10), // set static paying amount
+          amount: parseFloat(paymentAmount), // set static paying amount
           renteeId,
           paymentStatus: "Pending",
           stripePaymentId: selectedCard.stripeCardId,
@@ -123,9 +211,13 @@ const PaymentMethod = () => {
         }
       );
       setPaymentData({
-        cardHolderName: selectedCard.cardHolderName,
-        amount: parseFloat(10),
-        last4: selectedCard.last4,
+        renteeDetails: renteeDetails,
+        amount: parseFloat(paymentAmount),
+        parkingDetails: locationDetails,
+        spotDetails: spotDetails,
+        startTime: startTime,
+        endTime: endTime,
+        date: date,
       });
       // alert("Payment Successful!");
       setOpenReceiptDialog(true);
@@ -134,9 +226,9 @@ const PaymentMethod = () => {
       console.log(error.response);
 
       // Extract the Stripe error message from the full error string
-      const fullError = error.response.data.toString(); // Ensure it's a string
+      const fullError = error.response?.data.toString(); // Ensure it's a string
       console.log(fullError);
-      const messageMatch = fullError.match(/Stripe error: (.*?);/); // Extract message between "Stripe error: " and ";"
+      const messageMatch = fullError?.match(/Stripe error: (.*?);/); // Extract message between "Stripe error: " and ";"
 
       // Get the extracted message or use a fallback message
       const stripeErrorMessage = messageMatch
@@ -324,10 +416,43 @@ const PaymentMethod = () => {
           <form onSubmit={handlePayment}>
             <MDBox mb={2}>
               <div>
-                <label className="pay-text">Total Due :</label>
-                <label className="pay-amount">$10</label>
+                {/* <label className="pay-text">Total Due :</label> */}
+                {/* <label className="pay-amount">${paymentAmount}</label> */}
                 {/* setPaymentAmount(10); */}
               </div>
+              <MDBox p={3}>
+                <Typography variant="h5" gutterBottom>
+                  Order Details
+                </Typography>
+                {locationDetails && (
+                  <MDBox mb={2}>
+                    <Typography variant="body1">
+                      <strong>Parking Address and Spot :</strong>
+                    </Typography>
+                    <Typography variant="body2">
+                      {locationDetails.street}, {locationDetails.city},{" "}
+                      {locationDetails.state}, {locationDetails.country},{" "}
+                      {locationDetails.zipCode}
+                    </Typography>
+                  </MDBox>
+                )}
+                {spotDetails && (
+                  <MDBox mb={2}>
+                    <Typography variant="body2">
+                      Spot Number: {spotDetails.spotNumber} <br />
+                      Spot Type: {spotDetails.spotType} <br />
+                      Price per Hour: ${spotDetails.pricePerHour}
+                    </Typography>
+                  </MDBox>
+                )}
+                <MDBox>
+                  <Typography variant="body1">
+                    <label className="pay-text">Total Due :</label>
+                    <label className="pay-amount">${paymentAmount}</label>
+                    {/* <strong>Total Amount:</strong> ${paymentAmount} */}
+                  </Typography>
+                </MDBox>
+              </MDBox>
             </MDBox>
             <MDButton variant="gradient" color="info" type="submit">
               Confirm Payment
