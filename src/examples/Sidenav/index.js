@@ -76,11 +76,11 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       setMiniSidenav(dispatch, window.innerWidth < 1200);
       setTransparentSidenav(
         dispatch,
-        window.innerWidth < 1200 ? false : transparentSidenav,
+        window.innerWidth < 1200 ? false : transparentSidenav
       );
       setWhiteSidenav(
         dispatch,
-        window.innerWidth < 1200 ? false : whiteSidenav,
+        window.innerWidth < 1200 ? false : whiteSidenav
       );
     }
 
@@ -158,7 +158,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
       }
 
       return returnValue;
-    },
+    }
   );
 
   const configsButton = (

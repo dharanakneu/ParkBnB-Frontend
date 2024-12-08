@@ -94,8 +94,8 @@ export default function App() {
               sessionStorage.getItem("userType") === "renter"
                 ? renterRoutes
                 : sessionStorage.getItem("userType") === "rentee"
-                  ? renteeRoutes
-                  : []
+                ? renteeRoutes
+                : []
             }
             onMouseEnter={handleOnMouseEnter}
             onMouseLeave={handleOnMouseLeave}

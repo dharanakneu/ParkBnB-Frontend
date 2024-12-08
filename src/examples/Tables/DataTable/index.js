@@ -67,7 +67,7 @@ function DataTable({
     { columns, data, initialState: { pageIndex: 0 } },
     useGlobalFilter,
     useSortBy,
-    usePagination,
+    usePagination
   );
 
   const {
@@ -208,7 +208,7 @@ function DataTable({
                 <DataTableHeadCell
                   key={idx}
                   {...column.getHeaderProps(
-                    isSorted && column.getSortByToggleProps(),
+                    isSorted && column.getSortByToggleProps()
                   )}
                   width={column.width ? column.width : "auto"}
                   align={column.align ? column.align : "left"}

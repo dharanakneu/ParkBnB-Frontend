@@ -38,7 +38,7 @@ const generateReceiptPDF = (paymentData) => {
     65,
     null,
     null,
-    "right",
+    "right"
   );
 
   // Payment Details
@@ -49,7 +49,7 @@ const generateReceiptPDF = (paymentData) => {
     85,
     null,
     null,
-    "center",
+    "center"
   );
 
   // Draw another line separator
@@ -68,7 +68,7 @@ const generateReceiptPDF = (paymentData) => {
     120,
     null,
     null,
-    "center",
+    "center"
   );
 
   // Save the PDF

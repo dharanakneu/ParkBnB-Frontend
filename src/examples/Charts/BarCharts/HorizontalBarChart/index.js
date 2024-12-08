@@ -50,7 +50,7 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
 function HorizontalBarChart({ icon, title, description, height, chart }) {
@@ -108,7 +108,7 @@ function HorizontalBarChart({ icon, title, description, height, chart }) {
             <Bar data={data} options={options} redraw />
           </MDBox>
         ),
-        [chart, height],
+        [chart, height]
       )}
     </MDBox>
   );
