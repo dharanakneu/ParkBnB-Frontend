@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   CircularProgress,
   Typography,
@@ -14,16 +14,18 @@ import {
   Rating,
 } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
+import BookingSpots from "./BookingSpots"; // Import your BookingSpots component
 
 const ParkingLocation = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [locationDetails, setLocationDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [linkedSpots, setLinkedSpots] = useState([]);
   const [selectedSpot, setSelectedSpot] = useState("");
   const [reviews, setReviews] = useState([]);
-
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog
+  const [currentSpotId, setCurrentSpotId] = useState(""); // State to pass the selected spot ID to the dialog
+  const [pricePerHour, setPricePerHour] = useState(10); // Default price per hour
   useEffect(() => {
     setLoading(true);
     axios
@@ -81,15 +83,17 @@ const ParkingLocation = () => {
     );
   }
 
-  // Construct the full image URL
-  const imageUrl = `http://localhost:8080/${locationDetails.parkingLocationImage}`;
-
-  const handleBookSpot = () => {
+  const handleOpenBookingDialog = () => {
     if (selectedSpot) {
-      navigate("/PaymentMethod", { state: { selectedSpot } });
+      setCurrentSpotId(selectedSpot); // Pass the selected spot ID
+      setIsDialogOpen(true); // Open the booking dialog
     } else {
       alert("Please select a parking spot before booking.");
     }
+  };
+
+  const handleCloseBookingDialog = () => {
+    setIsDialogOpen(false); // Close the dialog
   };
 
   return (
@@ -111,7 +115,7 @@ const ParkingLocation = () => {
               <Grid item xs={12} md={6}>
                 {locationDetails.parkingLocationImage ? ( // Check if the image URL exists
                   <img
-                    src={imageUrl} // Use the constructed image URL
+                    src={`http://localhost:8080/${locationDetails.parkingLocationImage}`} // Use the constructed image URL
                     alt="Parking Location"
                     style={{ width: "100%", height: "auto" }} // Responsive image
                   />
@@ -148,7 +152,23 @@ const ParkingLocation = () => {
             {linkedSpots.length > 0 ? (
               <RadioGroup
                 value={selectedSpot}
-                onChange={(e) => setSelectedSpot(e.target.value)}
+                onChange={(e) => {
+                  const selectedSpotId = e.target.value;
+                  setSelectedSpot(selectedSpotId);
+
+                  // Log selectedSpotId for debugging
+                  console.log("Selected Spot ID:", selectedSpotId);
+
+                  // Find the selected spot details
+                  const selectedSpotDetails = linkedSpots.find(
+                    (spot) => String(spot.id) === String(selectedSpotId)
+                  );
+
+                  // Log selectedSpotDetails for debugging
+                  console.log("Selected Spot Details:", selectedSpotDetails);
+
+                  setPricePerHour(selectedSpotDetails?.pricePerHour || 10);
+                }}
               >
                 {linkedSpots.map((spot) => (
                   <FormControlLabel
@@ -231,7 +251,7 @@ const ParkingLocation = () => {
               <Button
                 variant="contained"
                 style={{ backgroundColor: "#4CAF50", color: "white" }}
-                onClick={handleBookSpot}
+                onClick={handleOpenBookingDialog}
                 disabled={!selectedSpot}
               >
                 Book Spot
@@ -247,6 +267,18 @@ const ParkingLocation = () => {
           </CardContent>
         </Card>
       </Grid>
+      console.log(pricePerHour);
+      {/* Booking Spots Dialog */}
+      <BookingSpots
+        open={isDialogOpen}
+        onClose={handleCloseBookingDialog}
+        spotId={currentSpotId}
+        spotNumber={
+          linkedSpots.find((spot) => spot.id === currentSpotId)?.spotNumber
+        }
+        locationId={id}
+        pricePerHour={pricePerHour}
+      />
     </DashboardLayout>
   );
 };
