@@ -191,7 +191,7 @@ const SearchParkingLocation = () => {
                         setTimeout(() => {
                           navigate(`/parking-location/${location.id}`);
                           setLoading(false);
-                        }, 500); // Simulate loading time
+                        }, 200); // Simulate loading time
                       }}
                       disabled={loading}
                     >
