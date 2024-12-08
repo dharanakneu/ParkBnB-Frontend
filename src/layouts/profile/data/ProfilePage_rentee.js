@@ -34,6 +34,7 @@ const ProfilePage_rentee = () => {
           alignItems: "center",
           minHeight: "100vh",
           backgroundColor: "#f4f6f8",
+          paddingBottom: "100px",
         }}
       >
         <Card

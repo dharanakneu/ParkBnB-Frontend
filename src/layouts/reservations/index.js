@@ -215,6 +215,10 @@ const Reservations = () => {
                           <Button
                             size="small"
                             onClick={() => handleOpen(reservation)}
+                            style={{
+                              backgroundColor: "#007FFF",
+                              color: "white",
+                            }}
                           >
                             Leave a Review
                           </Button>
