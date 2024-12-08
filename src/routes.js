@@ -27,6 +27,10 @@ const renterRoutes = [
     component: <RenterDashboard />,
   },
   {
+    type: "collapse",
+    name: "Post Parking Location",
+    key: "post-parking-location",
+    icon: <Icon fontSize="small">add_location</Icon>,
     route: "/post-parking-location",
     component: <PostParkingLocation />,
   },
