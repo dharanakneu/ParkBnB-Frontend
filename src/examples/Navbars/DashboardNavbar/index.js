@@ -37,7 +37,7 @@ function DashboardNavbar({ absolute, light, isMini }) {
     function handleTransparentNavbar() {
       setTransparentNavbar(
         dispatch,
-        (fixedNavbar && window.scrollY === 0) || !fixedNavbar,
+        (fixedNavbar && window.scrollY === 0) || !fixedNavbar
       );
     }
 

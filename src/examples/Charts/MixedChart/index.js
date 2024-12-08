@@ -61,7 +61,7 @@ ChartJS.register(
   Tooltip,
   LineController,
   BarController,
-  Filler,
+  Filler
 );
 
 function MixedChart({ icon, title, description, height, chart }) {
@@ -107,7 +107,7 @@ function MixedChart({ icon, title, description, height, chart }) {
               chartElement.ctx,
               colors[dataset.color]
                 ? colors[dataset.color || "dark"].main
-                : colors.dark.main,
+                : colors.dark.main
             ),
           };
 

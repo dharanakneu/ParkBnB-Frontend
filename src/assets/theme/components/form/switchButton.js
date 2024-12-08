@@ -65,7 +65,7 @@ const switchButton = {
       "&.Mui-focusVisible .MuiSwitch-thumb": {
         backgroundImage: linearGradient(
           gradients.info.main,
-          gradients.info.state,
+          gradients.info.state
         ),
       },
     },

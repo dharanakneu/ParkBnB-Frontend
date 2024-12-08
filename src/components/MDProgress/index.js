@@ -40,7 +40,7 @@ const MDProgress = forwardRef(
         ownerState={{ color, value, variant }}
       />
     </>
-  ),
+  )
 );
 
 // Setting default values for the props of MDProgress

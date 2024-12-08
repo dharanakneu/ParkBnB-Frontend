@@ -52,7 +52,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler,
+  Filler
 );
 
 function ReportsLineChart({ color, title, description, date, chart }) {
@@ -76,7 +76,7 @@ function ReportsLineChart({ color, title, description, date, chart }) {
               <Line data={data} options={options} redraw />
             </MDBox>
           ),
-          [chart, color],
+          [chart, color]
         )}
         <MDBox pt={3} pb={1} px={1}>
           <MDTypography variant="h6" textTransform="capitalize">
@@ -131,7 +131,7 @@ ReportsLineChart.propTypes = {
   description: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
   date: PropTypes.string.isRequired,
   chart: PropTypes.objectOf(
-    PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+    PropTypes.oneOfType([PropTypes.array, PropTypes.object])
   ).isRequired,
 };
 

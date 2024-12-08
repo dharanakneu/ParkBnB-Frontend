@@ -32,7 +32,7 @@ function ForgotPassword() {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       if (renterResponse.status === 200) {
@@ -56,7 +56,7 @@ function ForgotPassword() {
             headers: {
               "Content-Type": "application/json",
             },
-          },
+          }
         );
 
         if (renteeResponse.status === 200) {

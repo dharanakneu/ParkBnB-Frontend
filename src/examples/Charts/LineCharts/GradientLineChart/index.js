@@ -57,7 +57,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler,
+  Filler
 );
 
 function GradientLineChart({ icon, title, description, height, chart }) {
@@ -84,7 +84,7 @@ function GradientLineChart({ icon, title, description, height, chart }) {
             chartElement.ctx,
             colors[dataset.color]
               ? colors[dataset.color || "dark"].main
-              : colors.dark.main,
+              : colors.dark.main
           ),
         }))
       : [];

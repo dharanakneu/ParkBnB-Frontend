@@ -52,7 +52,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  Filler,
+  Filler
 );
 
 function ProgressLineChart({
@@ -68,7 +68,7 @@ function ProgressLineChart({
     color,
     chart.labels || [],
     title,
-    chart.data || [],
+    chart.data || []
   );
 
   return (
@@ -123,7 +123,7 @@ function ProgressLineChart({
             <Line data={data} options={options} style={{ height }} redraw />
           </MDBox>
         ),
-        [chart, height, color],
+        [chart, height, color]
       )}
     </Card>
   );

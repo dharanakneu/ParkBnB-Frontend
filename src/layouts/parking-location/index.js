@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   CircularProgress,
   Typography,
@@ -17,6 +17,7 @@ import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 const ParkingLocation = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [locationDetails, setLocationDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [linkedSpots, setLinkedSpots] = useState([]);
@@ -82,6 +83,14 @@ const ParkingLocation = () => {
 
   // Construct the full image URL
   const imageUrl = `http://localhost:8080/${locationDetails.parkingLocationImage}`;
+
+  const handleBookSpot = () => {
+    if (selectedSpot) {
+      navigate(`/PaymentMethod`, { state: { selectedSpot } });
+    } else {
+      alert("Please select a parking spot before booking.");
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -222,6 +231,7 @@ const ParkingLocation = () => {
               <Button
                 variant="contained"
                 style={{ backgroundColor: "#4CAF50", color: "white" }}
+                onClick={handleBookSpot}
                 disabled={!selectedSpot}
               >
                 Book Spot

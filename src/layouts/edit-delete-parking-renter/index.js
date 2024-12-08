@@ -27,7 +27,7 @@ function EditDeleteParkingLocation() {
     if (!renterId) return;
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/parkinglocation/renter/${renterId}`,
+        `http://localhost:8080/api/parkinglocation/renter/${renterId}`
       );
       setLocations(response.data);
     } catch (error) {
@@ -45,7 +45,7 @@ function EditDeleteParkingLocation() {
     }
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/parkingspot/location/${locationId}`,
+        `http://localhost:8080/api/parkingspot/location/${locationId}`
       );
       setSpots(response.data);
       setSelectedLocation(locationId);
@@ -105,7 +105,7 @@ function EditDeleteParkingLocation() {
     try {
       await axios.put(
         `http://localhost:8080/api/parkinglocation/${editLocationData.id}`,
-        editLocationData,
+        editLocationData
       );
       fetchParkingLocations();
       setIsEditingLocation(false);
@@ -119,7 +119,7 @@ function EditDeleteParkingLocation() {
     try {
       await axios.put(
         `http://localhost:8080/api/parkingspot/${editSpotData.id}`,
-        editSpotData,
+        editSpotData
       );
       fetchParkingSpots(selectedLocation);
       setIsEditingSpot(false);
