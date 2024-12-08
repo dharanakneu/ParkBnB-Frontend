@@ -8,6 +8,13 @@ import Card from "@mui/material/Card";
 import Checkbox from "@mui/material/Checkbox";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import Button from "@mui/material/Button";
+
 // Material Dashboard components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -37,6 +44,8 @@ function Cover() {
     severity: "",
     message: "",
   });
+
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleNotificationClose = () =>
     setNotification({ ...notification, open: false });
@@ -102,12 +111,9 @@ function Cover() {
           : "http://localhost:8080/api/rentees";
 
       const response = await axios.post(endpoint, dataToSend);
-      setNotification({
-        open: true,
-        severity: "success",
-        message: response.data.message || "User registered successfully!",
-      });
-      navigate("/sign-in");
+
+      // Show the dialog for success
+      setOpenDialog(true);
     } catch (error) {
       if (error.response && error.response.data.message) {
         setNotification({
@@ -294,6 +300,34 @@ function Cover() {
           {notification.message}
         </Alert>
       </Snackbar>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="success-dialog-title"
+        aria-describedby="success-dialog-description"
+      >
+        <DialogTitle id="success-dialog-title">
+          {"Sign Up Successful"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="success-dialog-description">
+            You have successfully signed up! Click &quot;OK&quot; to proceed to
+            the Sign In page.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => {
+              setOpenDialog(false);
+              navigate("/sign-in");
+            }}
+            color="primary"
+            autoFocus
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </CoverLayout>
   );
 }

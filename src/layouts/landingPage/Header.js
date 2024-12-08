@@ -18,7 +18,7 @@ const Header = () => {
           <img
             src={logo} // Change this path to your logo image
             alt="Park BnB Logo"
-            style={{ height: 250 }} // Adjust the size of the logo as needed
+            style={{ height: 100 }} // Adjust the size of the logo as needed
           />
         </Box>
 
