@@ -204,6 +204,10 @@ const Reservations = () => {
                                     .longitude
                                 )
                               }
+                              style={{
+                                backgroundColor: "green",
+                                color: "white",
+                              }}
                             >
                               Navigate to Location
                             </Button>
