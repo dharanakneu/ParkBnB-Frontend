@@ -77,7 +77,7 @@ const SearchParkingLocation = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false); // For managing loading state
   const [fetching, setFetching] = useState(false); // New state for tracking fetching state
-  const radius = 5; // Default radius in miles
+  const radius = 2; // Default radius in miles
   const navigate = useNavigate(); // Hook for navigation
 
   // Function to fetch user's current location and parking locations
@@ -128,83 +128,82 @@ const SearchParkingLocation = () => {
 
   return (
     <DashboardLayout>
-      <h3 style={{ marginBottom: "30px" }}>Nearby Parking Locations</h3>
-
-      {/* Inject the keyframes animation into the document */}
-      <style>{spinnerKeyframes}</style>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      {/* Loading Spinner and Message */}
-      {fetching && (
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginBottom: "20px",
-          }}
-        >
-          <div style={spinnerStyle}></div>
-          <span style={{ marginLeft: "10px" }}>
-            Fetching nearby parking locations...
-          </span>
-        </div>
-      )}
-
-      {/* Display the parking locations only if fetching is complete */}
-      {!fetching && parkingLocations.length === 0 && (
-        <p>No parking locations found in your area.</p>
-      )}
-
-      {parkingLocations.length > 0 && (
-        <div>
-          {parkingLocations.map((location, index) => (
+      <Container sx={{ width: "1000px !important" }}>
+        <Card sx={{ p: 4, backgroundColor: "white", boxShadow: 3 }}>
+          <h3 style={{ marginBottom: "30px" }}>Nearby Parking Locations</h3>
+          {/* Inject the keyframes animation into the document */}
+          <style>{spinnerKeyframes}</style>
+          {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* Loading Spinner and Message */}
+          {fetching && (
             <div
-              key={index}
-              style={cardStyle}
-              onClick={() => navigate(`/parking-location/${location.id}`)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
             >
-              {/* Parking Location Image */}
-              <img
-                src={`http://localhost:8080/${location.parkingLocationImage}`} // Placeholder image URL (you can replace this with actual images)
-                alt="Parking Location"
-                style={imageStyle}
-              />
-
-              {/* Location Details */}
-              <div style={detailsStyle}>
-                <h4>
-                  {location.street}, {location.city}
-                </h4>
-                <p>
-                  {location.state}, {location.postalcode}
-                </p>
-              </div>
-
-              {/* Button Container */}
-              <div style={buttonContainerStyle}>
-                <button
-                  style={
-                    loading ? loadingButtonDisabledStyle : loadingButtonStyle
-                  }
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent card click navigation
-                    setLoading(true);
-                    // Simulate an async action (e.g., fetching more data) and navigate
-                    setTimeout(() => {
-                      navigate(`/parking-location/${location.id}`);
-                      setLoading(false);
-                    }, 500); // Simulate loading time
-                  }}
-                  disabled={loading}
-                >
-                  {loading ? "Loading..." : "View Parking Spots"}
-                </button>
-              </div>
+              <div style={spinnerStyle}></div>
+              <span style={{ marginLeft: "10px" }}>
+                Fetching nearby parking locations...
+              </span>
             </div>
-          ))}
-        </div>
-      )}
+          )}
+          {/* Display the parking locations only if fetching is complete */}
+          {!fetching && parkingLocations.length === 0 && (
+            <p>No parking locations found in your area.</p>
+          )}
+          {parkingLocations.length > 0 && (
+            <div>
+              {parkingLocations.map((location, index) => (
+                <div
+                  key={index}
+                  style={cardStyle}
+                  onClick={() => navigate(`/parking-location/${location.id}`)}
+                >
+                  {/* Parking Location Image */}
+                  <img
+                    src={`http://localhost:8080/${location.parkingLocationImage}`} // Placeholder image URL (you can replace this with actual images)
+                    alt="Parking Location"
+                    style={imageStyle}
+                  />
+                  {/* Location Details */}
+                  <div style={detailsStyle}>
+                    <h4>
+                      {location.street}, {location.city}
+                    </h4>
+                    <p>
+                      {location.state}, {location.postalcode}
+                    </p>
+                  </div>
+                  {/* Button Container */}
+                  <div style={buttonContainerStyle}>
+                    <button
+                      style={
+                        loading
+                          ? loadingButtonDisabledStyle
+                          : loadingButtonStyle
+                      }
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent card click navigation
+                        setLoading(true);
+                        // Simulate an async action (e.g., fetching more data) and navigate
+                        setTimeout(() => {
+                          navigate(`/parking-location/${location.id}`);
+                          setLoading(false);
+                        }, 500); // Simulate loading time
+                      }}
+                      disabled={loading}
+                    >
+                      {loading ? "Loading..." : "View Parking Spots"}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </Container>
     </DashboardLayout>
   );
 };

@@ -85,6 +85,10 @@ const renteeRoutes = [
     component: <RenteeDashboard />,
   },
   {
+    type: "collapse",
+    name: "Search Parking Location",
+    key: "search-parking-location",
+    icon: <Icon fontSize="small">add_location</Icon>,
     route: "/search-parking-location",
     component: <SearchParkingLocation />,
   },
