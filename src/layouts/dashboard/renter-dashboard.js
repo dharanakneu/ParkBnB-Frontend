@@ -63,13 +63,13 @@ function RenterDashboard() {
               mt: 2,
               px: 4,
               py: 1,
-              backgroundColor: "primary.main",
+              backgroundColor: "primary",
               color: "white",
               fontWeight: "bold",
               fontSize: "1rem",
               textTransform: "uppercase",
               "&:hover": {
-                backgroundColor: "primary.dark",
+                backgroundColor: "primary",
               },
               boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.3)", // Button shadow for depth
             }}
