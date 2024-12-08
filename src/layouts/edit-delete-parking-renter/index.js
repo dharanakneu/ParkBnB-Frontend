@@ -136,18 +136,16 @@ function EditDeleteParkingLocation() {
   // Edit a parking spot
   const editParkingSpot = async () => {
     try {
-      console.log("Submitting edit spot data:", editSpotData); // Log data being sent
 
-      // Map isAvailable to available before sending the request
       const spotData = {
         ...editSpotData,
-        available: editSpotData.isAvailable, // Map frontend's isAvailable to backend's available
+        available: editSpotData.isAvailable, 
       };
 
       // Send data to the backend
       await axios.put(
         `http://localhost:8080/api/parkingspot/${editSpotData.id}`,
-        spotData // Send mapped data
+        spotData 
       );
 
       // Fetch the updated parking spots and hide the form
@@ -179,76 +177,80 @@ function EditDeleteParkingLocation() {
               Your Parking Locations
             </Typography>
             {renterId ? (
-              <List>
-                {locations.map((location) => (
-                  <Box
-                    key={location.id}
-                    sx={{ mb: 2, p: 2, borderRadius: 2, boxShadow: 3 }}
-                  >
-                    <ListItem
-                      sx={{
-                        justifyContent: "space-between",
-                        alignItems: "flex-start",
-                      }}
+              locations.length > 0 ? (
+                <List>
+                  {locations.map((location) => (
+                    <Box
+                      key={location.id}
+                      sx={{ mb: 2, p: 2, borderRadius: 2, boxShadow: 3 }}
                     >
-                      <Box sx={{ mr: 32 }}>
-                        <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          <LocationOnIcon
-                            fontSize="small"
-                            sx={{ mr: 1, color: "#3f51b5" }}
-                          />
-                          {location.street}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                          {location.city}, {location.state},{" "}
-                          {location.postalcode}
-                        </Typography>
-                      </Box>
-                      <Box>
-                        <Button
-                          startIcon={
-                            selectedLocation === location.id ? (
-                              <VisibilityOffIcon />
-                            ) : (
-                              <VisibilityIcon />
-                            )
-                          }
-                          onClick={() => fetchParkingSpots(location.id)}
-                          sx={{
-                            mr: 1,
-                            backgroundColor: "#e3f2fd", // Light blue
-                            color: "#0d47a1", // Dark blue text
-                            border: "1px solid #0d47a1", // Matching border color
-                            "&:hover": {
-                              backgroundColor: "#bbdefb", // Slightly darker blue on hover
-                              border: "1px solid #0d47a1",
-                            },
-                          }}
-                          variant="outlined"
-                        >
-                          {selectedLocation === location.id
-                            ? "Hide Spots"
-                            : "View Spots"}
-                        </Button>
-                        <IconButton
-                          color="error"
-                          onClick={() => deleteParkingLocation(location.id)}
-                          sx={{ mr: 1 }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                        <IconButton
-                          color="primary"
-                          onClick={() => toggleEditLocation(location)}
-                        >
-                          <EditIcon />
-                        </IconButton>
-                      </Box>
-                    </ListItem>
-                    <Divider />
-                  </Box>
-                ))}
-              </List>
+                      <ListItem
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Box sx={{ mr: 32 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            <LocationOnIcon
+                              fontSize="small"
+                              sx={{ mr: 1, color: "#3f51b5" }}
+                            />
+                            {location.street}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {location.city}, {location.state},{" "}
+                            {location.postalcode}
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <Button
+                            startIcon={
+                              selectedLocation === location.id ? (
+                                <VisibilityOffIcon />
+                              ) : (
+                                <VisibilityIcon />
+                              )
+                            }
+                            onClick={() => fetchParkingSpots(location.id)}
+                            sx={{
+                              mr: 1,
+                              backgroundColor: "#e3f2fd", // Light blue
+                              color: "#0d47a1", // Dark blue text
+                              border: "1px solid #0d47a1", // Matching border color
+                              "&:hover": {
+                                backgroundColor: "#bbdefb", // Slightly darker blue on hover
+                                border: "1px solid #0d47a1",
+                              },
+                            }}
+                            variant="outlined"
+                          >
+                            {selectedLocation === location.id
+                              ? "Hide Spots"
+                              : "View Spots"}
+                          </Button>
+                          <IconButton
+                            color="error"
+                            onClick={() => deleteParkingLocation(location.id)}
+                            sx={{ mr: 1 }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton
+                            color="primary"
+                            onClick={() => toggleEditLocation(location)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Box>
+                      </ListItem>
+                      <Divider />
+                    </Box>
+                  ))}
+                </List>
+              ) : (
+                <Typography>No parking locations to display.</Typography> // Message when no locations are available
+              )
             ) : (
               <Typography>
                 Please log in to view your parking locations.
