@@ -86,7 +86,7 @@ const ParkingLocation = () => {
 
   const handleBookSpot = () => {
     if (selectedSpot) {
-      navigate(`/PaymentMethod`, { state: { selectedSpot } });
+      navigate('/PaymentMethod', { state: { selectedSpot } });
     } else {
       alert("Please select a parking spot before booking.");
     }
