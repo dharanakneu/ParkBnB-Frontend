@@ -36,7 +36,7 @@ const Reservations = () => {
   const fetchReservations = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/reservations/rentee/${renteeId}`,
+        `http://localhost:8080/api/reservations/rentee/${renteeId}`
       );
       setReservations(response.data);
     } catch (err) {
@@ -90,7 +90,7 @@ const Reservations = () => {
               lng: position.coords.longitude,
             });
           },
-          (error) => reject(error),
+          (error) => reject(error)
         );
       } else {
         reject(new Error("Geolocation is not supported by this browser."));
@@ -201,7 +201,7 @@ const Reservations = () => {
                                   reservation.parkingSpot.parkingLocation
                                     .latitude,
                                   reservation.parkingSpot.parkingLocation
-                                    .longitude,
+                                    .longitude
                                 )
                               }
                             >

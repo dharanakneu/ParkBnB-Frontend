@@ -32,7 +32,7 @@ const ParkingLocation = () => {
         setLocationDetails(response.data);
       })
       .catch((error) =>
-        console.error("Error fetching parking location data:", error),
+        console.error("Error fetching parking location data:", error)
       );
 
     axios
@@ -44,8 +44,8 @@ const ParkingLocation = () => {
       .catch((error) =>
         console.error(
           "Error fetching linked available parking spots data:",
-          error,
-        ),
+          error
+        )
       );
 
     axios

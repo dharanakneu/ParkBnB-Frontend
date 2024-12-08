@@ -5,17 +5,17 @@ const Footer = () => {
   return (
     <Box sx={{ bgcolor: "grey.200", py: 3, mt: 8 }}>
       <Container maxWidth="md" sx={{ textAlign: "center" }}>
-        <Typography variant="body1">
-          {/* <Link href="#" color="inherit" sx={{ mx: 2 }}>
+        {/* <Typography variant="body1">
+          <Link href="#" color="inherit" sx={{ mx: 2 }}>
             About
-          </Link> */}
+          </Link>
           <Link href="#" color="inherit" sx={{ mx: 2 }}>
             Privacy Policy
           </Link>
           <Link href="#" color="inherit" sx={{ mx: 2 }}>
             Contact Us
           </Link>
-        </Typography>
+        </Typography> */}
         <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
           © {new Date().getFullYear()} ParkBnB. All rights reserved.
         </Typography>
