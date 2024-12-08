@@ -136,10 +136,21 @@ function EditDeleteParkingLocation() {
   // Edit a parking spot
   const editParkingSpot = async () => {
     try {
+      console.log("Submitting edit spot data:", editSpotData); // Log data being sent
+
+      // Map isAvailable to available before sending the request
+      const spotData = {
+        ...editSpotData,
+        available: editSpotData.isAvailable, // Map frontend's isAvailable to backend's available
+      };
+
+      // Send data to the backend
       await axios.put(
         `http://localhost:8080/api/parkingspot/${editSpotData.id}`,
-        editSpotData
+        spotData // Send mapped data
       );
+
+      // Fetch the updated parking spots and hide the form
       fetchParkingSpots(selectedLocation);
       setIsEditingSpot(false);
     } catch (error) {
@@ -337,7 +348,7 @@ function EditDeleteParkingLocation() {
 
             {/* Edit Parking Spot Form */}
             {isEditingSpot && (
-              <Box sx={{ mt: 4 }}>
+              <Box sx={{ mt: 4, p: 6 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -420,13 +431,14 @@ function EditDeleteParkingLocation() {
                       Availability
                     </Typography>
                     <RadioGroup
-                      value={editSpotData.isAvailable ? "Yes" : "No"}
-                      onChange={(e) =>
-                        setEditSpotData({
-                          ...editSpotData,
-                          isAvailable: e.target.value === "Yes",
-                        })
-                      }
+                      value={editSpotData.isAvailable ? "Yes" : "No"} // Keep using isAvailable in frontend state
+                      onChange={(e) => {
+                        const isAvailable = e.target.value === "Yes"; // Convert Yes/No to boolean
+                        setEditSpotData((prevData) => ({
+                          ...prevData,
+                          isAvailable, // Set isAvailable directly
+                        }));
+                      }}
                       row
                     >
                       <FormControlLabel
