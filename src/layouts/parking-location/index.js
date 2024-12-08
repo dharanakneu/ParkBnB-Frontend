@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import BookingSpots from "./BookingSpots"; // Import your BookingSpots component
+import { useNavigate } from "react-router-dom";
 
 const ParkingLocation = () => {
   const { id } = useParams();
@@ -26,6 +27,8 @@ const ParkingLocation = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false); // State to manage dialog
   const [currentSpotId, setCurrentSpotId] = useState(""); // State to pass the selected spot ID to the dialog
   const [pricePerHour, setPricePerHour] = useState(10); // Default price per hour
+  const navigate = useNavigate();
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -259,6 +262,7 @@ const ParkingLocation = () => {
               <Button
                 variant="contained"
                 color="secondary"
+                onClick={() => navigate("/search-parking-location")} // Define the onClick behavior
                 style={{ marginLeft: "10px", color: "white" }}
               >
                 Back to List
