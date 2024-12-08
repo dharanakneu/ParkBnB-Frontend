@@ -8,6 +8,7 @@ import {
   CardHeader,
   Typography,
 } from "@mui/material";
+import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 
 const ProfilePage_rentee = () => {
   const [profileData, setProfileData] = useState(null);
@@ -25,65 +26,67 @@ const ProfilePage_rentee = () => {
   }, [userId]);
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minHeight: "100vh",
-        backgroundColor: "#f4f6f8",
-      }}
-    >
-      <Card
+    <DashboardLayout>
+      <Box
         sx={{
-          width: "100%",
-          maxWidth: 400,
-          padding: 2,
-          borderRadius: 2,
-          boxShadow: 3,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+          backgroundColor: "#f4f6f8",
         }}
       >
-        <CardHeader
-          title="Rentee Profile"
-          titleTypographyProps={{ align: "center" }}
-        />
+        <Card
+          sx={{
+            width: "100%",
+            maxWidth: 400,
+            padding: 2,
+            borderRadius: 2,
+            boxShadow: 3,
+          }}
+        >
+          <CardHeader
+            title="Rentee Profile"
+            titleTypographyProps={{ align: "center" }}
+          />
 
-        <CardContent>
-          {profileData ? (
-            <Box sx={{ textAlign: "center" }}>
-              <Avatar
-                alt="Profile Picture"
-                src={`http://localhost:8080/images/${profileData.profileImage}`}
-                sx={{
-                  width: 100,
-                  height: 100,
-                  marginBottom: 2,
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
-              />
-              <Typography
-                sx={{
-                  fontWeight: "bold",
-                  fontSize: "1.5rem",
-                  marginTop: 1,
-                }}
-              >
-                {profileData.firstName} {profileData.lastName}
-              </Typography>
-              <Typography sx={{ color: "text.secondary", marginTop: 1 }}>
-                Email: {profileData.email}
-              </Typography>
-              <Typography sx={{ color: "text.secondary", marginTop: 1 }}>
-                Phone: {profileData.phone}
-              </Typography>
-            </Box>
-          ) : (
-            <Typography>Loading...</Typography>
-          )}
-        </CardContent>
-      </Card>
-    </Box>
+          <CardContent>
+            {profileData ? (
+              <Box sx={{ textAlign: "center" }}>
+                <Avatar
+                  alt="Profile Picture"
+                  src={`http://localhost:8080/images/${profileData.profileImage}`}
+                  sx={{
+                    width: 100,
+                    height: 100,
+                    marginBottom: 2,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }}
+                />
+                <Typography
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "1.5rem",
+                    marginTop: 1,
+                  }}
+                >
+                  {profileData.firstName} {profileData.lastName}
+                </Typography>
+                <Typography sx={{ color: "text.secondary", marginTop: 1 }}>
+                  Email: {profileData.email}
+                </Typography>
+                <Typography sx={{ color: "text.secondary", marginTop: 1 }}>
+                  Phone: {profileData.phone}
+                </Typography>
+              </Box>
+            ) : (
+              <Typography>Loading...</Typography>
+            )}
+          </CardContent>
+        </Card>
+      </Box>
+    </DashboardLayout>
   );
 };
 
