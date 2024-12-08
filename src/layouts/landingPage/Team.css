@@ -43,9 +43,7 @@
   opacity: 0; /* Hidden by default */
   padding: 8px;
   border-radius: 8px 8px 0 0; /* Rounded top corners */
-  transition:
-    opacity 0.3s ease,
-    transform 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
   text-align: center;
   font-size: 12px; /* Smaller font size */
 }

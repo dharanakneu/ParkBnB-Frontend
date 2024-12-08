@@ -14,14 +14,18 @@ const LandingPage = () => {
       <Hero />
       <Features />
       <Team />
-      <Footer />
       <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
         <Link to="/sign-in" style={{ textDecoration: "none" }}>
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            style={{ color: "white" }}
+          >
             Sign In
           </Button>
         </Link>
       </Box>
+      <Footer />
     </div>
   );
 };

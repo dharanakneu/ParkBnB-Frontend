@@ -66,7 +66,7 @@ function Basic() {
           headers: {
             "Content-Type": "application/json",
           },
-        },
+        }
       );
 
       if (renterResponse.status === 200) {
@@ -94,7 +94,7 @@ function Basic() {
             headers: {
               "Content-Type": "application/json",
             },
-          },
+          }
         );
 
         if (renteeResponse.status === 200) {
@@ -189,7 +189,7 @@ function Basic() {
                 &nbsp;&nbsp;Remember me
               </MDTypography>
             </MDBox>
-            <MDBox mt={3} mb={1}>
+            <MDBox mt={2} mb={0}>
               <MDTypography variant="button" color="text">
                 <MDTypography
                   component={Link}
@@ -203,7 +203,7 @@ function Basic() {
                 </MDTypography>
               </MDTypography>
             </MDBox>
-            <MDBox mt={4} mb={1}>
+            <MDBox mt={0} mb={1}>
               <MDButton type="submit" variant="gradient" color="info" fullWidth>
                 sign in
               </MDButton>
