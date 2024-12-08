@@ -161,28 +161,6 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
     }
   );
 
-  const configsButton = (
-    <MDBox
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      width="3.25rem"
-      height="3.25rem"
-      bgColor="white"
-      shadow="sm"
-      borderRadius="50%"
-      position="fixed"
-      left="2rem"
-      bottom="2rem"
-      zIndex={99}
-      color="dark"
-      sx={{ cursor: "pointer" }}
-      onClick={handleConfiguratorOpen}
-    >
-      <ThemeIcon fontSize="small" color="inherit" />
-    </MDBox>
-  );
-
   return (
     <SidenavRoot
       {...rest}
@@ -232,14 +210,7 @@ function Sidenav({ color, brand, brandName, routes, ...rest }) {
           </MDBox>
         </MDBox>
       </MDBox>
-      <Divider
-        light={
-          (!darkMode && !whiteSidenav && !transparentSidenav) ||
-          (darkMode && !transparentSidenav && whiteSidenav)
-        }
-      />
       <List>{renderRoutes}</List>
-      {configsButton}
     </SidenavRoot>
   );
 }
