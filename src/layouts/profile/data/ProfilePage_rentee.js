@@ -33,7 +33,6 @@ const ProfilePage_rentee = () => {
           justifyContent: "center",
           alignItems: "center",
           minHeight: "100vh",
-          backgroundColor: "#f4f6f8",
           paddingBottom: "100px",
         }}
       >

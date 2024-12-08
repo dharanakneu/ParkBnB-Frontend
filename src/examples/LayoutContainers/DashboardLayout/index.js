@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Material Dashboard 2 React - v2.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard-react
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useEffect } from "react";
 
 // react-router-dom components
@@ -33,7 +18,20 @@ function DashboardLayout({ children }) {
   const { pathname } = useLocation();
 
   useEffect(() => {
+    // Set layout and add background image to body
     setLayout(dispatch, "dashboard");
+    document.body.style.backgroundImage = "url('/images/parking-page-bg.jpg')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundAttachment = "fixed"; // Keep the background fixed during scroll
+
+    // Cleanup to remove the background image when the component unmounts
+    return () => {
+      document.body.style.backgroundImage = "";
+      document.body.style.backgroundSize = "";
+      document.body.style.backgroundPosition = "";
+      document.body.style.backgroundAttachment = "";
+    };
   }, [pathname]);
 
   return (

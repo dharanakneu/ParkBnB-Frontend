@@ -15,6 +15,7 @@ import ForgotPassword from "layouts/authentication/forgot-password";
 import { renterRoutes, renteeRoutes } from "./routes";
 import ResetPassword from "layouts/authentication/reset-password";
 import LandingPage from "layouts/landingPage/LandingPage";
+import "./App.css";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();

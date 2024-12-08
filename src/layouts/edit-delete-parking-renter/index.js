@@ -14,6 +14,7 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Card,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -154,146 +155,24 @@ function EditDeleteParkingLocation() {
   return (
     <DashboardLayout>
       <Container sx={{ mt: 4, mb: 2 }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <Typography variant="h4" sx={{ mt: 4, mb: 2 }}>
-            Your Parking Locations
-          </Typography>
-          {renterId ? (
-            <List>
-              {locations.map((location) => (
-                <Box
-                  key={location.id}
-                  sx={{ mb: 2, p: 2, borderRadius: 2, boxShadow: 3 }}
-                >
-                  <ListItem
-                    sx={{
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                    }}
-                  >
-                    <Box sx={{ mr: 32 }}>
-                      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                        <LocationOnIcon
-                          fontSize="small"
-                          sx={{ mr: 1, color: "#3f51b5" }}
-                        />
-                        {location.street}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {location.city}, {location.state}, {location.postalcode}
-                      </Typography>
-                    </Box>
-                    <Box>
-                      <Button
-                        startIcon={
-                          selectedLocation === location.id ? (
-                            <VisibilityOffIcon />
-                          ) : (
-                            <VisibilityIcon />
-                          )
-                        }
-                        onClick={() => fetchParkingSpots(location.id)}
-                        sx={{
-                          mr: 1,
-                          backgroundColor: "#e3f2fd", // Light blue
-                          color: "#0d47a1", // Dark blue text
-                          border: "1px solid #0d47a1", // Matching border color
-                          "&:hover": {
-                            backgroundColor: "#bbdefb", // Slightly darker blue on hover
-                            border: "1px solid #0d47a1",
-                          },
-                        }}
-                        variant="outlined"
-                      >
-                        {selectedLocation === location.id
-                          ? "Hide Spots"
-                          : "View Spots"}
-                      </Button>
-                      <IconButton
-                        color="error"
-                        onClick={() => deleteParkingLocation(location.id)}
-                        sx={{ mr: 1 }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                      <IconButton
-                        color="primary"
-                        onClick={() => toggleEditLocation(location)}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                    </Box>
-                  </ListItem>
-                  <Divider />
-                </Box>
-              ))}
-            </List>
-          ) : (
-            <Typography>
-              Please log in to view your parking locations.
+        <Card sx={{ pt: 4, pb: 10, backgroundColor: "white", boxShadow: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <Typography variant="h4" sx={{ mt: 2, mb: 2 }}>
+              Your Parking Locations
             </Typography>
-          )}
-
-          {/* Edit Parking Location Form */}
-          {isEditingLocation && (
-            <Box sx={{ mt: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h6">Edit Parking Location</Typography>
-                <IconButton
-                  onClick={() => {
-                    setIsEditingLocation(false);
-                    setEditLocationData({});
-                  }}
-                >
-                  <CloseIcon />
-                </IconButton>
-              </Box>
-              <TextField
-                fullWidth
-                label="Street"
-                value={editLocationData.street || ""}
-                onChange={(e) =>
-                  setEditLocationData({
-                    ...editLocationData,
-                    street: e.target.value,
-                  })
-                }
-                sx={{ my: 2 }}
-              />
-              <Button
-                variant="contained"
-                onClick={editParkingLocation}
-                color="success"
-              >
-                Save
-              </Button>
-            </Box>
-          )}
-
-          {/* Parking Spots Section */}
-          {selectedLocation && (
-            <Box sx={{ mt: 4 }}>
-              <Typography variant="h5" sx={{ mb: 1 }}>
-                Parking Spots
-              </Typography>
+            {renterId ? (
               <List>
-                {spots.map((spot) => (
+                {locations.map((location) => (
                   <Box
-                    key={spot.id}
-                    sx={{ p: 2, borderRadius: 2, boxShadow: 3 }}
+                    key={location.id}
+                    sx={{ mb: 2, p: 2, borderRadius: 2, boxShadow: 3 }}
                   >
                     <ListItem
                       sx={{
@@ -303,151 +182,277 @@ function EditDeleteParkingLocation() {
                     >
                       <Box sx={{ mr: 32 }}>
                         <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                          Spot Number: {spot.spotNumber}, Type: {spot.spotType}
+                          <LocationOnIcon
+                            fontSize="small"
+                            sx={{ mr: 1, color: "#3f51b5" }}
+                          />
+                          {location.street}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                          Price: ${spot.pricePerHour}
+                          {location.city}, {location.state},{" "}
+                          {location.postalcode}
                         </Typography>
                       </Box>
                       <Box>
+                        <Button
+                          startIcon={
+                            selectedLocation === location.id ? (
+                              <VisibilityOffIcon />
+                            ) : (
+                              <VisibilityIcon />
+                            )
+                          }
+                          onClick={() => fetchParkingSpots(location.id)}
+                          sx={{
+                            mr: 1,
+                            backgroundColor: "#e3f2fd", // Light blue
+                            color: "#0d47a1", // Dark blue text
+                            border: "1px solid #0d47a1", // Matching border color
+                            "&:hover": {
+                              backgroundColor: "#bbdefb", // Slightly darker blue on hover
+                              border: "1px solid #0d47a1",
+                            },
+                          }}
+                          variant="outlined"
+                        >
+                          {selectedLocation === location.id
+                            ? "Hide Spots"
+                            : "View Spots"}
+                        </Button>
                         <IconButton
                           color="error"
-                          onClick={() => deleteParkingSpot(spot.id)}
+                          onClick={() => deleteParkingLocation(location.id)}
                           sx={{ mr: 1 }}
                         >
                           <DeleteIcon />
                         </IconButton>
                         <IconButton
                           color="primary"
-                          onClick={() => toggleEditSpot(spot)}
+                          onClick={() => toggleEditLocation(location)}
                         >
                           <EditIcon />
                         </IconButton>
                       </Box>
                     </ListItem>
+                    <Divider />
                   </Box>
                 ))}
               </List>
-            </Box>
-          )}
+            ) : (
+              <Typography>
+                Please log in to view your parking locations.
+              </Typography>
+            )}
 
-          {/* Edit Parking Spot Form */}
-          {isEditingSpot && (
-            <Box sx={{ mt: 4 }}>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Typography variant="h6">Edit Parking Spot</Typography>
-                <IconButton
-                  onClick={() => {
-                    setIsEditingSpot(false);
-                    setEditSpotData({});
+            {/* Edit Parking Location Form */}
+            {isEditingLocation && (
+              <Box sx={{ mt: 4 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  <CloseIcon />
-                </IconButton>
+                  <Typography variant="h6">Edit Parking Location</Typography>
+                  <IconButton
+                    onClick={() => {
+                      setIsEditingLocation(false);
+                      setEditLocationData({});
+                    }}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                </Box>
+                <TextField
+                  fullWidth
+                  label="Street"
+                  value={editLocationData.street || ""}
+                  onChange={(e) =>
+                    setEditLocationData({
+                      ...editLocationData,
+                      street: e.target.value,
+                    })
+                  }
+                  sx={{ my: 2 }}
+                />
+                <Button
+                  variant="contained"
+                  onClick={editParkingLocation}
+                  color="success"
+                >
+                  Save
+                </Button>
               </Box>
-              <TextField
-                fullWidth
-                label="Spot Number"
-                value={editSpotData.spotNumber || ""}
-                onChange={(e) =>
-                  setEditSpotData({
-                    ...editSpotData,
-                    spotNumber: e.target.value,
-                  })
-                }
-                sx={{ my: 2 }}
-              />
-              <FormControl fullWidth>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography
-                    variant="caption"
-                    sx={{ mr: 2, fontWeight: "bold" }}
+            )}
+
+            {/* Parking Spots Section */}
+            {selectedLocation && (
+              <Box sx={{ mt: 4 }}>
+                <Typography variant="h5" sx={{ mb: 1 }}>
+                  Parking Spots
+                </Typography>
+                <List>
+                  {spots.map((spot) => (
+                    <Box
+                      key={spot.id}
+                      sx={{ p: 2, borderRadius: 2, boxShadow: 3 }}
+                    >
+                      <ListItem
+                        sx={{
+                          justifyContent: "space-between",
+                          alignItems: "flex-start",
+                        }}
+                      >
+                        <Box sx={{ mr: 32 }}>
+                          <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                            Spot Number: {spot.spotNumber}, Type:{" "}
+                            {spot.spotType}
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            Price: ${spot.pricePerHour}
+                          </Typography>
+                        </Box>
+                        <Box>
+                          <IconButton
+                            color="error"
+                            onClick={() => deleteParkingSpot(spot.id)}
+                            sx={{ mr: 1 }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <IconButton
+                            color="primary"
+                            onClick={() => toggleEditSpot(spot)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Box>
+                      </ListItem>
+                    </Box>
+                  ))}
+                </List>
+              </Box>
+            )}
+
+            {/* Edit Parking Spot Form */}
+            {isEditingSpot && (
+              <Box sx={{ mt: 4 }}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="h6">Edit Parking Spot</Typography>
+                  <IconButton
+                    onClick={() => {
+                      setIsEditingSpot(false);
+                      setEditSpotData({});
+                    }}
                   >
-                    Spot Type:
-                  </Typography>
-                  <RadioGroup
-                    value={editSpotData.spotType || ""}
-                    onChange={(e) =>
-                      setEditSpotData({
-                        ...editSpotData,
-                        spotType: e.target.value,
-                      })
-                    }
-                    row
-                  >
-                    <FormControlLabel
-                      value="2 Wheeler"
-                      control={<Radio />}
-                      label="2 Wheeler"
-                    />
-                    <FormControlLabel
-                      value="4 Wheeler"
-                      control={<Radio />}
-                      label="4 Wheeler"
-                    />
-                  </RadioGroup>
+                    <CloseIcon />
+                  </IconButton>
                 </Box>
-              </FormControl>
-              <TextField
-                fullWidth
-                label="Price per Hour"
-                type="number"
-                value={editSpotData.pricePerHour || ""}
-                onChange={(e) =>
-                  setEditSpotData({
-                    ...editSpotData,
-                    pricePerHour: e.target.value,
-                  })
-                }
-                sx={{ my: 2 }}
-              />
-              <FormControl fullWidth>
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <Typography
-                    variant="caption"
-                    sx={{ mr: 2, fontWeight: "bold" }}
-                  >
-                    Availability
-                  </Typography>
-                  <RadioGroup
-                    value={editSpotData.isAvailable ? "Yes" : "No"}
-                    onChange={(e) =>
-                      setEditSpotData({
-                        ...editSpotData,
-                        isAvailable: e.target.value === "Yes",
-                      })
-                    }
-                    row
-                  >
-                    <FormControlLabel
-                      value="Yes"
-                      control={<Radio />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="No"
-                      control={<Radio />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </Box>
-              </FormControl>
-              <Button
-                variant="contained"
-                onClick={editParkingSpot}
-                color="success"
-              >
-                Save
-              </Button>
-            </Box>
-          )}
-        </Box>
+                <TextField
+                  fullWidth
+                  label="Spot Number"
+                  value={editSpotData.spotNumber || ""}
+                  onChange={(e) =>
+                    setEditSpotData({
+                      ...editSpotData,
+                      spotNumber: e.target.value,
+                    })
+                  }
+                  sx={{ my: 2 }}
+                />
+                <FormControl fullWidth>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      variant="caption"
+                      sx={{ mr: 2, fontWeight: "bold" }}
+                    >
+                      Spot Type:
+                    </Typography>
+                    <RadioGroup
+                      value={editSpotData.spotType || ""}
+                      onChange={(e) =>
+                        setEditSpotData({
+                          ...editSpotData,
+                          spotType: e.target.value,
+                        })
+                      }
+                      row
+                    >
+                      <FormControlLabel
+                        value="2 Wheeler"
+                        control={<Radio />}
+                        label="2 Wheeler"
+                      />
+                      <FormControlLabel
+                        value="4 Wheeler"
+                        control={<Radio />}
+                        label="4 Wheeler"
+                      />
+                    </RadioGroup>
+                  </Box>
+                </FormControl>
+                <TextField
+                  fullWidth
+                  label="Price per Hour"
+                  type="number"
+                  value={editSpotData.pricePerHour || ""}
+                  onChange={(e) =>
+                    setEditSpotData({
+                      ...editSpotData,
+                      pricePerHour: e.target.value,
+                    })
+                  }
+                  sx={{ my: 2 }}
+                />
+                <FormControl fullWidth>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography
+                      variant="caption"
+                      sx={{ mr: 2, fontWeight: "bold" }}
+                    >
+                      Availability
+                    </Typography>
+                    <RadioGroup
+                      value={editSpotData.isAvailable ? "Yes" : "No"}
+                      onChange={(e) =>
+                        setEditSpotData({
+                          ...editSpotData,
+                          isAvailable: e.target.value === "Yes",
+                        })
+                      }
+                      row
+                    >
+                      <FormControlLabel
+                        value="Yes"
+                        control={<Radio />}
+                        label="Yes"
+                      />
+                      <FormControlLabel
+                        value="No"
+                        control={<Radio />}
+                        label="No"
+                      />
+                    </RadioGroup>
+                  </Box>
+                </FormControl>
+                <Button
+                  variant="contained"
+                  onClick={editParkingSpot}
+                  color="success"
+                >
+                  Save
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </Card>
       </Container>
     </DashboardLayout>
   );
