@@ -78,9 +78,6 @@ const PaymentMethod = () => {
     const startDateTime = new Date(`${date}T${startTime}:00`);
     const endDateTime = new Date(`${date}T${endTime}:00`);
 
-    console.log("Start Date Time: ", startDateTime);
-    console.log("End Date Time: ", endDateTime);
-
     // Calculate the duration in milliseconds
     const duration = endDateTime - startDateTime;
 
@@ -94,16 +91,6 @@ const PaymentMethod = () => {
     const hours = Math.ceil(duration / (1000 * 60 * 60)); // Convert milliseconds to hours
     return hours * pricePerHour;
   };
-  console.log("Payment Amount: ", paymentAmount);
-  console.log(
-    "testing  ",
-    date,
-    startTime,
-    endTime,
-    pricePerHour,
-    locationId,
-    spotId
-  );
 
   useEffect(() => {
     fetchCards();
@@ -111,7 +98,6 @@ const PaymentMethod = () => {
     axios
       .get(`http://localhost:8080/api/parkinglocation/${locationId}`)
       .then((response) => {
-        console.log("Parking location data:", response.data);
         setLocationDetails(response.data);
       })
       .catch((error) =>
@@ -121,7 +107,6 @@ const PaymentMethod = () => {
     axios
       .get(`http://localhost:8080/api/parkingspot/${spotId}`)
       .then((response) => {
-        console.log("Parking location data:", response.data);
         setSpotDetails(response.data);
       })
       .catch((error) =>
@@ -131,7 +116,6 @@ const PaymentMethod = () => {
     axios
       .get(`http://localhost:8080/api/rentees/${renteeId}`)
       .then((response) => {
-        console.log("Rentee data", response.data);
         setRenteeDetails(response.data);
       })
       .catch((error) =>
@@ -167,13 +151,11 @@ const PaymentMethod = () => {
       console.error("Error creating PaymentMethod:", error);
       return;
     }
-    console.log(paymentMethod);
     // Access card details from the PaymentMethod object
     const { card } = paymentMethod;
     const last4 = card.last4; // Last 4 digits
     const expiryDate = `${card.exp_month}/${card.exp_year}`; // Expiry date (MM/YY)
     const type = card.brand; // Card type (Visa, MasterCard, etc.)
-    console.log(cardHolderName);
     try {
       const response = await axios.post("http://localhost:8080/api/cards", {
         last4,
@@ -183,7 +165,6 @@ const PaymentMethod = () => {
         cardHolderName: cardHolderName,
         renteeId,
       });
-      console.log("Card added:", response.data);
       fetchCards(); // Refresh the saved cards list
       setIsAddingCard(false); // Close the add card form
       setCardholderName(""); // Clear cardholder name field
@@ -203,7 +184,6 @@ const PaymentMethod = () => {
       alert("Please select a card for payment");
       return;
     }
-    //console.log(selectedCard);
     try {
       // Payment API call
       const paymentResponse = await axios.post(
@@ -220,8 +200,6 @@ const PaymentMethod = () => {
 
       const paymentIntentId = paymentResponse.data;
 
-      console.log("Payment successful:", paymentResponse);
-
       // Set payment details for receipt
       setPaymentData({
         renteeDetails: renteeDetails,
@@ -236,9 +214,6 @@ const PaymentMethod = () => {
       const startDateTime = `${date}T${startTime}:00`; // Adding ":00" for seconds
       const endDateTime = `${date}T${endTime}:00`; // Adding ":00" for seconds
 
-      console.log("Formatted Start Time:", startDateTime);
-      console.log("Formatted End Time:", endDateTime);
-
       // Reservation API call
       const reservationRequest = {
         startTime: startDateTime,
@@ -250,26 +225,19 @@ const PaymentMethod = () => {
         paymentIntentId: paymentIntentId,
       };
 
-      console.log("Reservation Request Body:", reservationRequest);
-
       const reservationResponse = await axios.post(
         "http://localhost:8080/api/reservations",
         reservationRequest
       );
 
-      console.log("Reservation API called");
-
       // Handle successful reservation response
       if (reservationResponse.status === 200) {
-        console.log("Reservation successful:", reservationResponse.data);
         alert("Reservation confirmed!");
         setOpenReceiptDialog(true); // Open receipt dialog after reservation
       } else {
         console.error("Unexpected reservation response:", reservationResponse);
         alert("Reservation failed. Please contact support.");
       }
-
-      console.log("Open receipt");
 
       setOpenReceiptDialog(true);
     } catch (error) {
