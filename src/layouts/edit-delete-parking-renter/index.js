@@ -136,16 +136,15 @@ function EditDeleteParkingLocation() {
   // Edit a parking spot
   const editParkingSpot = async () => {
     try {
-
       const spotData = {
         ...editSpotData,
-        available: editSpotData.isAvailable, 
+        available: editSpotData.isAvailable,
       };
 
       // Send data to the backend
       await axios.put(
         `http://localhost:8080/api/parkingspot/${editSpotData.id}`,
-        spotData 
+        spotData
       );
 
       // Fetch the updated parking spots and hide the form
