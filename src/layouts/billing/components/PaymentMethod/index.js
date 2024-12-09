@@ -232,7 +232,6 @@ const PaymentMethod = () => {
 
       // Handle successful reservation response
       if (reservationResponse.status === 200) {
-        alert("Reservation confirmed!");
         setOpenReceiptDialog(true); // Open receipt dialog after reservation
       } else {
         console.error("Unexpected reservation response:", reservationResponse);

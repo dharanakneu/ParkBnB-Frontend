@@ -5,7 +5,6 @@ const Logout = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("User logged out");
     sessionStorage.clear();
     navigate("/sign-in");
   }, [navigate]);
