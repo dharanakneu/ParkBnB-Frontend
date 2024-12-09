@@ -47,15 +47,6 @@ const BookingSpots = ({
   // Handle confirmation and redirect to payment
   const handleConfirmBooking = () => {
     if (selectedDate && startTime && endTime && isValidTimeRange()) {
-      console.log(
-        "Booking spot, .....!",
-        selectedDate,
-        startTime,
-        endTime,
-        pricePerHour,
-        locationId,
-        spotId
-      );
       navigate("/paymentMethod", {
         state: {
           date: selectedDate,

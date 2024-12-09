@@ -34,7 +34,6 @@ const ParkingLocation = () => {
     axios
       .get(`http://localhost:8080/api/parkinglocation/${id}`)
       .then((response) => {
-        console.log("Parking location data:", response.data);
         setLocationDetails(response.data);
       })
       .catch((error) =>
@@ -44,7 +43,6 @@ const ParkingLocation = () => {
     axios
       .get(`http://localhost:8080/api/parkinglocation/${id}/available-spots`)
       .then((response) => {
-        console.log("Available spots data:", response.data);
         setLinkedSpots(response.data);
       })
       .catch((error) =>
@@ -57,7 +55,6 @@ const ParkingLocation = () => {
     axios
       .get(`http://localhost:8080/api/parkinglocation/${id}/reviews`)
       .then((response) => {
-        console.log("Reviews data:", response.data);
         setReviews(response.data);
       })
       .catch((error) => console.error("Error fetching reviews data:", error))
@@ -159,16 +156,10 @@ const ParkingLocation = () => {
                   const selectedSpotId = e.target.value;
                   setSelectedSpot(selectedSpotId);
 
-                  // Log selectedSpotId for debugging
-                  console.log("Selected Spot ID:", selectedSpotId);
-
                   // Find the selected spot details
                   const selectedSpotDetails = linkedSpots.find(
                     (spot) => String(spot.id) === String(selectedSpotId)
                   );
-
-                  // Log selectedSpotDetails for debugging
-                  console.log("Selected Spot Details:", selectedSpotDetails);
 
                   setPricePerHour(selectedSpotDetails?.pricePerHour || 10);
                 }}
@@ -271,7 +262,6 @@ const ParkingLocation = () => {
           </CardContent>
         </Card>
       </Grid>
-      console.log(pricePerHour);
       {/* Booking Spots Dialog */}
       <BookingSpots
         open={isDialogOpen}
