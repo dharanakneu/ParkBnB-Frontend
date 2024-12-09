@@ -22,8 +22,15 @@ const Receipt = ({ open, paymentData, onClose }) => {
   };
 
   // eslint-disable-next-line prettier/prettier, react/prop-types
-  const { renteeDetails, amount, parkingDetails, spotDetails, date, startTime, endTime } =
-  paymentData;
+  const {
+    renteeDetails,
+    amount,
+    parkingDetails,
+    spotDetails,
+    date,
+    startTime,
+    endTime,
+  } = paymentData;
   console.log(paymentData);
 
   return (

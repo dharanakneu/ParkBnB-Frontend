@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
-// @mui material components
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Icon from "@mui/material/Icon";
@@ -9,6 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MDButton from "components/MDButton";
 import "./index.css";
 import Receipt from "./Receipt";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import {
   Button,
@@ -20,6 +20,7 @@ import {
   DialogTitle,
   TextField,
   MenuItem,
+  IconButton,
 } from "@mui/material";
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
@@ -44,6 +45,11 @@ const PaymentMethod = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [openReceiptDialog, setOpenReceiptDialog] = useState(false);
   const [paymentData, setPaymentData] = useState(null); // Store receipt data
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
+  const [deleteError, setDeleteError] = useState(""); // Error message for the card deletion
   const location = useLocation();
   const [locationDetails, setLocationDetails] = useState(null);
   const [spotDetails, setSpotDetails] = useState(null);
@@ -241,6 +247,47 @@ const PaymentMethod = () => {
       setErrorDialogOpen(true); // Open the error dialog
     }
   };
+
+  const handleDeleteCard = async (cardId) => {
+    try {
+      // Make the API request to delete the card
+      const response = await axios.delete(
+        `http://localhost:8080/api/cards/${cardToDelete.id}`
+      );
+
+      if (response.status === 200) {
+        // Successfully deleted
+        setOpenDeleteDialog(false); // Close the dialog
+        // Refresh the page to reflect the changes
+        window.location.reload(); // Reload the page
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        // Card cannot be deleted, show error dialog
+        setDeleteError(
+          "Card cannot be deleted because it is referenced in payments."
+        );
+        setOpenDeleteDialog(false); // Close the current dialog
+        setOpenErrorDialog(true); // Show the error dialog
+      } else {
+        // Handle other errors
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
+
+  // Open confirmation dialog
+  const openDeleteDialogMethod = (card) => {
+    setCardToDelete(card);
+    setDeleteDialogOpen(true);
+  };
+
+  // Close confirmation dialog
+  const closeDeleteDialog = () => {
+    setDeleteDialogOpen(false);
+    setCardToDelete(null);
+  };
+
   return (
     <Card id="payment-method" className="cardGrid">
       {/* Error Dialog */}
@@ -369,7 +416,7 @@ const PaymentMethod = () => {
                   display="flex"
                   justifyContent="space-between"
                   alignItems="center"
-                  p={3}
+                  p={5}
                   sx={{
                     border: ({ borders: { borderWidth, borderColor } }) =>
                       `${borderWidth[1]} solid ${borderColor}`,
@@ -377,9 +424,25 @@ const PaymentMethod = () => {
                     cursor: "pointer",
                     backgroundColor:
                       selectedCard?.id === card.id ? "#f0f0f0" : "transparent",
+                    position: "relative",
                   }}
                   onClick={() => handleCardSelect(card)}
                 >
+                  <Tooltip title="Delete Card">
+                    <IconButton
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent triggering the card selection
+                        openDeleteDialogMethod(card);
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: "8px",
+                        right: "8px",
+                      }}
+                    >
+                      <DeleteIcon color="error" />
+                    </IconButton>
+                  </Tooltip>
                   <MDBox
                     component="img"
                     src={
@@ -398,7 +461,7 @@ const PaymentMethod = () => {
                   <MDTypography
                     variant="h6"
                     fontWeight="medium"
-                    style={{ textAlign: "right" }}
+                    style={{ textAlign: "left" }}
                   >
                     {card.cardHolderName} <br />
                     **** {card.last4} <br />
@@ -410,6 +473,40 @@ const PaymentMethod = () => {
           )}
         </Grid>
       </MDBox>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={deleteDialogOpen} onClose={closeDeleteDialog}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <Typography>Are you sure you want to delete this card?</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteCard}
+            color="secondary"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Error Dialog */}
+      <Dialog open={openErrorDialog} onClose={() => setOpenErrorDialog(false)}>
+        <DialogTitle>Error</DialogTitle>
+        <DialogContent>
+          <Typography variant="body1">{deleteError}</Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenErrorDialog(false)} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Payment Form */}
       {selectedCard && (
         <MDBox p={2}>
