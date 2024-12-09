@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from "react";
-import PropTypes from "prop-types"; // Import PropTypes
+import PropTypes from "prop-types";
 import {
   Dialog,
   DialogActions,
@@ -11,17 +11,18 @@ import {
   Divider,
   Box,
 } from "@mui/material";
-import generateReceiptPDF from "./generateReceipt"; // Import the receipt generation function
+import generateReceiptPDF from "./generateReceipt";
+import { useNavigate } from "react-router-dom";
 
-const Receipt = ({ open, paymentData, onClose }) => {
+const Receipt = ({ open, paymentData, navigateToReservation }) => {
   if (!paymentData) return null;
+  const navigate = useNavigate();
 
   // Handle the download of the receipt
   const handleDownload = () => {
     generateReceiptPDF(paymentData);
   };
 
-  // eslint-disable-next-line prettier/prettier, react/prop-types
   const {
     renteeDetails,
     amount,
@@ -31,10 +32,9 @@ const Receipt = ({ open, paymentData, onClose }) => {
     startTime,
     endTime,
   } = paymentData;
-  console.log(paymentData);
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={navigateToReservation} fullWidth maxWidth="sm">
       <DialogTitle align="center">PARKING RECEIPT</DialogTitle>
       <DialogContent>
         <Box sx={{ textAlign: "center", paddingBottom: 2 }}>
@@ -132,15 +132,14 @@ const Receipt = ({ open, paymentData, onClose }) => {
         <Button onClick={handleDownload} color="primary">
           Download
         </Button>
-        <Button onClick={onClose} color="primary">
-          Close
+        <Button onClick={() => navigate("/my-reservations")} color="primary">
+          Go to Your Bookings
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-// Define PropTypes for validation
 Receipt.propTypes = {
   open: PropTypes.bool.isRequired,
   paymentData: PropTypes.shape({
@@ -160,7 +159,7 @@ Receipt.propTypes = {
     startTime: PropTypes.string.isRequired,
     endTime: PropTypes.string.isRequired,
   }).isRequired,
-  onClose: PropTypes.func.isRequired,
+  navigateToReservation: PropTypes.func.isRequired, // Updated prop
 };
 
 export default Receipt;

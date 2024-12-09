@@ -205,7 +205,8 @@ const PaymentMethod = () => {
     }
     //console.log(selectedCard);
     try {
-      const response = await axios.post(
+      // Payment API call
+      const paymentResponse = await axios.post(
         "http://localhost:8080/api/payments/create",
         {
           amount: parseFloat(paymentAmount), // set static paying amount
@@ -216,6 +217,12 @@ const PaymentMethod = () => {
           cardholderName: selectedCard.cardHolderName,
         }
       );
+
+      const paymentIntentId = paymentResponse.data;
+
+      console.log("Payment successful:", paymentResponse);
+
+      // Set payment details for receipt
       setPaymentData({
         renteeDetails: renteeDetails,
         amount: parseFloat(paymentAmount),
@@ -225,11 +232,56 @@ const PaymentMethod = () => {
         endTime: endTime,
         date: date,
       });
-      // alert("Payment Successful!");
+
+      const startDateTime = `${date}T${startTime}:00`; // Adding ":00" for seconds
+      const endDateTime = `${date}T${endTime}:00`; // Adding ":00" for seconds
+
+      console.log("Formatted Start Time:", startDateTime);
+      console.log("Formatted End Time:", endDateTime);
+
+      // Reservation API call
+      const reservationRequest = {
+        startTime: startDateTime,
+        endTime: endDateTime,
+        status: "Confirm", // Fixed value as per requirements
+        renteeId: parseInt(renteeId, 10), // Convert renteeId to an integer
+        parkingSpotId: parseInt(spotId, 10), // Convert spotId to an integer
+        paymentId: 0, // Use the payment ID from the response
+        paymentIntentId: paymentIntentId,
+      };
+
+      console.log("Reservation Request Body:", reservationRequest);
+
+      const reservationResponse = await axios.post(
+        "http://localhost:8080/api/reservations",
+        reservationRequest
+      );
+
+      console.log("Reservation API called");
+
+      // Handle successful reservation response
+      if (reservationResponse.status === 200) {
+        console.log("Reservation successful:", reservationResponse.data);
+        alert("Reservation confirmed!");
+        setOpenReceiptDialog(true); // Open receipt dialog after reservation
+      } else {
+        console.error("Unexpected reservation response:", reservationResponse);
+        alert("Reservation failed. Please contact support.");
+      }
+
+      console.log("Open receipt");
+
       setOpenReceiptDialog(true);
-      console.log("Payment successful:", response.data);
     } catch (error) {
-      console.log(error.response);
+      if (error.response) {
+        console.error("Error response:", error.response.data);
+        alert(
+          `Error: ${error.response.data.message || "Something went wrong."}`
+        );
+      } else {
+        console.error("Error:", error.message);
+        alert("An unexpected error occurred. Please try again later.");
+      }
 
       // Extract the Stripe error message from the full error string
       const fullError = error.response?.data.toString(); // Ensure it's a string
