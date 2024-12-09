@@ -121,7 +121,6 @@ const PostParkingLocation = () => {
         },
       })
       .then((response) => {
-        console.log("Parking location posted:", response.data);
         setOpenDialog(true);
         resetForm();
       })
