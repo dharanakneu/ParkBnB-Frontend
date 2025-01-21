@@ -23,6 +23,15 @@ Welcome to the frontend repository of **ParkMate**, a web application designed t
 
 ---
 
+## Contributors 👩🏻‍💻
+- Dharana Kashyap   [kashyap.dh@northeastern.edu]
+- Keya Goswami      [goswami.ke@northeastern.edu]  
+- Shreya Wanisha    [wanisha.s@northeastern.edu]  
+- Shriya Pratapwar  [pratapwar.s@northeastern.edu]
+- Vanshi Patel      [patel.vanshi@northeastern.edu]
+
+---
+
 ## Installation and Setup
 
 Follow these steps to get the frontend of ParkMate running on your local machine:
